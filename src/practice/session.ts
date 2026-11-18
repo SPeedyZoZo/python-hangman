@@ -220,7 +220,7 @@ export class PracticeSession {
     }
     if (!frame) return;
 
-    const m = matchTarget(step.target, frame, this.params);
+    const m = matchTarget(step.target, frame, this.params, now - this.lastOnsetT);
     const run = m.kind === 'match' ? (this.runs.get(step.index) ?? 0) + 1 : 0;
     this.runs.set(step.index, run);
     const fresh =
@@ -299,7 +299,7 @@ export class PracticeSession {
       const deadline = stepT + WINDOW.ok + maxMatchDelayMs(step.target);
       let m = null;
       if (frame) {
-        m = matchTarget(step.target, frame, this.params);
+        m = matchTarget(step.target, frame, this.params, now - this.lastOnsetT);
         const run = m.kind === 'match' ? (this.runs.get(step.index) ?? 0) + 1 : 0;
         this.runs.set(step.index, run);
         const delta = this.lastOnsetT - stepT;

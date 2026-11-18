@@ -25,6 +25,7 @@ export function matchTarget(
   target: Target,
   frame: AudioFrame,
   params: DetectionParams,
+  msSinceOnset = Infinity,
 ): MatchResult {
   if (target.kind === 'note') {
     const p = frame.pitch;
@@ -33,10 +34,16 @@ export function matchTarget(
     const ok = (d === 0 || (params.octaveLenient && Math.abs(d) === 12)) && Math.abs(p.cents) <= 50;
     return { kind: ok ? 'match' : 'other', heardMidi: p.midi, cents: p.cents };
   }
-  if (!frame.chroma) return { kind: 'none' };
+  if (!frame.chroma || msSinceOnset < CHORD_SETTLE_MS) return { kind: 'none' };
   const v = verifyChord(target.chord, frame.chroma, params);
   return { kind: v.match ? 'match' : 'other', score: v.score, hints: v.hints };
 }
+
+/**
+ * Chords are only judged once the strum has finished and the analysis window holds mostly the
+ * new chord: a down-strum of G7 sounds like G until the high string arrives (Sprint 3 finding).
+ */
+export const CHORD_SETTLE_MS = 120;
 
 /** Consecutive matching frames required before a step counts. */
 export function stableFramesFor(target: Target): number {

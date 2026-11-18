@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import { useSettings } from '../settings/store.ts';
 import { FullLayout, TabLayout } from '../ui/Layout.tsx';
+import { ChordDetailScreen } from '../screens/ChordDetailScreen.tsx';
+import { ChordsScreen } from '../screens/ChordsScreen.tsx';
 import { HomeScreen } from '../screens/HomeScreen.tsx';
 import { Placeholder } from '../screens/Placeholder.tsx';
 import { PlayerScreen } from '../screens/PlayerScreen.tsx';
@@ -26,7 +28,8 @@ export function App() {
         <Route element={<TabLayout />}>
           <Route path="/" element={<HomeScreen />} />
           <Route path="/songs" element={<SongsScreen />} />
-          <Route path="/chords" element={<Placeholder title="Chords" />} />
+          <Route path="/chords" element={<ChordsScreen />} />
+          <Route path="/chords/:id" element={<ChordDetailScreen />} />
           <Route path="/tuner" element={<TunerScreen />} />
           <Route path="/settings" element={<Placeholder title="Settings" />} />
         </Route>

@@ -467,3 +467,49 @@ select {
 .wrap-actions {
   justify-content: flex-end;
 }
+
+/* Chords */
+.chord-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: var(--s3);
+}
+.chord-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s1);
+  padding: var(--s3);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  color: var(--text);
+  text-decoration: none;
+}
+.chord-tile:hover {
+  border-color: var(--primary);
+}
+.chord-detail {
+  display: flex;
+  gap: var(--s5);
+  align-items: center;
+  flex-wrap: wrap;
+}
+.verdict {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  font-weight: 700;
+  font-size: 1.1rem;
+  min-height: 2em;
+  text-align: left;
+}
+.verdict-ok {
+  color: var(--good);
+}
+.verdict-almost {
+  color: var(--bad);
+}

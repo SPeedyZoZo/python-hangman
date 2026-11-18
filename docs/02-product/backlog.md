@@ -41,11 +41,11 @@ Acceptance criteria (AC) are written as Given/When/Then shorthand.
 
 | ID   | Story                                                           | AC                                                                               | Req                 | Status |
 | ---- | --------------------------------------------------------------- | -------------------------------------------------------------------------------- | ------------------- | ------ |
-| S3-1 | As a learner I want my chords verified                          | Benchmark ≥90% correct accepts and <5% false accepts across the chord library    | FR-DET-2, NFR-ACC-1 | ☐      |
-| S3-2 | As a learner I want to know which note is missing from my chord | Removing one string's note from a synthetic strum yields a hint naming that note | FR-DET-4            | ☐      |
-| S3-3 | As a learner I want chord diagrams                              | Fingers, open (○) and muted (×) strings, mirrored in left-handed mode            | FR-CHD-1, FR-SET-1  | ☐      |
-| S3-4 | As a learner I want a chord library with "Check my chord"       | Live verification on the detail screen                                           | FR-CHD-2            | ☐      |
-| S3-5 | As a learner I want to see the next chord coming                | Upcoming-chord diagram at least 1 beat ahead                                     | FR-PLY-9            | ☐      |
+| S3-1 | As a learner I want my chords verified                          | Benchmark ≥90% correct accepts and <5% false accepts across the chord library    | FR-DET-2, NFR-ACC-1 | ☑      |
+| S3-2 | As a learner I want to know which note is missing from my chord | Removing one string's note from a synthetic strum yields a hint naming that note | FR-DET-4            | ☑      |
+| S3-3 | As a learner I want chord diagrams                              | Fingers, open (○) and muted (×) strings, mirrored in left-handed mode            | FR-CHD-1, FR-SET-1  | ☑      |
+| S3-4 | As a learner I want a chord library with "Check my chord"       | Live verification on the detail screen                                           | FR-CHD-2            | ☑      |
+| S3-5 | As a learner I want to see the next chord coming                | Upcoming-chord diagram at least 1 beat ahead                                     | FR-PLY-9            | ☑      |
 
 ## Epic E4: Curriculum, progress and coach (Sprint 4)
 
