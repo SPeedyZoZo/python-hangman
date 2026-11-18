@@ -21,3 +21,5 @@
 | D-015 | Sprint 2 | Wait Mode arms a step 1 beat before the hit line                                          | BA, DSP            | audio-engine-spec §3 |
 | D-016 | Sprint 3 | Chroma band 60–800 Hz, linear magnitude; templates 8 harmonics at decay 0.9 (grid search) | DSP                | audio spec §2        |
 | D-017 | Sprint 3 | Chord verification adds a settle time, tone presence and note-level rival discrimination  | DSP, Architect     | ADR-0003 amendment   |
+| D-018 | Sprint 5 | E2E (fake mic, axe, offline) runs in CI after the check job                               | DevOps, QA         | ci.yml               |
+| D-019 | Sprint 5 | MVP accepted as a release candidate, with release conditions D1, R2 and D2                | PO                 | mvp-acceptance.md    |

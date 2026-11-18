@@ -64,11 +64,11 @@ Acceptance criteria (AC) are written as Given/When/Then shorthand.
 
 | ID   | Story                                                       | AC                                                                            | Req                          | Status |
 | ---- | ----------------------------------------------------------- | ----------------------------------------------------------------------------- | ---------------------------- | ------ |
-| S5-1 | As a learner I want it to work offline and be installable   | The service worker precaches the app shell and content. The manifest is valid | NFR-OFF-1                    | ☐      |
-| S5-2 | As a learner using assistive tech I want an accessible app  | axe: no serious or critical violations on every screen                        | NFR-A11Y-1, NFR-A11Y-2       | ☐      |
-| S5-3 | As the team we want end-to-end tests with a fake microphone | Tuner, Wait Mode and chord accept/reject e2e tests pass                       | FR-TUN-1, FR-PLY-2, FR-DET-2 | ☐      |
-| S5-4 | As the sponsor I want a deployable build and docs           | Pages workflow, README, user guide, privacy and security docs                 | NFR-PRIV-1, NFR-SEC-1        | ☐      |
-| S5-5 | As the PO I want an MVP acceptance review                   | Checklist signed off in the Sprint 5 report                                   | all                          | ☐      |
+| S5-1 | As a learner I want it to work offline and be installable   | The service worker precaches the app shell and content. The manifest is valid | NFR-OFF-1                    | ☑      |
+| S5-2 | As a learner using assistive tech I want an accessible app  | axe: no serious or critical violations on every screen                        | NFR-A11Y-1, NFR-A11Y-2       | ☑      |
+| S5-3 | As the team we want end-to-end tests with a fake microphone | Tuner, Wait Mode and chord accept/reject e2e tests pass                       | FR-TUN-1, FR-PLY-2, FR-DET-2 | ☑      |
+| S5-4 | As the sponsor I want a deployable build and docs           | Pages workflow, README, user guide, privacy and security docs                 | NFR-PRIV-1, NFR-SEC-1        | ☑      |
+| S5-5 | As the PO I want an MVP acceptance review                   | Checklist signed off in the Sprint 5 report                                   | all                          | ☑      |
 
 ## Icebox (post-MVP)
 

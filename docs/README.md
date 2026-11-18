@@ -15,5 +15,5 @@ them in sync.
 | 07  | Delivery     | [Roles and RACI](07-delivery/roles-raci.md) · [Delivery plan](07-delivery/delivery-plan.md) · [Ways of working](07-delivery/ways-of-working.md) · [RAID log](07-delivery/raid-log.md) · [Decision log](07-delivery/decision-log.md) · [Sprint reports](07-delivery/sprint-reports/) | Delivery Lead                                        |
 | 08  | Ops          | [Deployment](08-ops/deployment.md) · [Privacy](08-ops/privacy.md) · [Security](08-ops/security.md)                                                                                                                                                                                  | DevOps · Security and Privacy Officer                |
 
-Also see the repository root [`CLAUDE.md`](../CLAUDE.md) (working agreement and commands) and
+Also see the [user guide](user-guide.md), the [MVP acceptance review](07-delivery/mvp-acceptance.md), the repository root [`CLAUDE.md`](../CLAUDE.md) (working agreement and commands) and
 [`README.md`](../README.md) (user-facing overview).

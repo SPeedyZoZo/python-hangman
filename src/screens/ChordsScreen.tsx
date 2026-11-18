@@ -12,13 +12,12 @@ export function ChordsScreen() {
       <ul className="chord-grid">
         {CHORD_IDS.map((id) => (
           <li key={id}>
-            <Link
-              to={`/chords/${id}`}
-              className="chord-tile"
-              aria-label={`${CHORDS[id].name}: open chord details`}
-            >
-              <ChordDiagram id={id} lefty={lefty} size={110} />
-              <span className="small muted">{CHORDS[id].name}</span>
+            <Link to={`/chords/${id}`} className="chord-tile">
+              <ChordDiagram id={id} lefty={lefty} size={110} decorative />
+              <span className="small muted">
+                <span className="visually-hidden">{id}: </span>
+                {CHORDS[id].name}
+              </span>
             </Link>
           </li>
         ))}

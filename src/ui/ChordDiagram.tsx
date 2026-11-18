@@ -9,11 +9,14 @@ export function ChordDiagram({
   lefty = false,
   size = 140,
   showName = true,
+  decorative = false,
 }: {
   id: ChordId;
   lefty?: boolean;
   size?: number;
   showName?: boolean;
+  /** Hide from assistive tech when the surrounding text already names the chord. */
+  decorative?: boolean;
 }) {
   const shape = CHORDS[id];
   const fretted = shape.frets.filter((f): f is number => f !== null && f > 0);
@@ -43,8 +46,9 @@ export function ChordDiagram({
         viewBox={`0 0 ${W} ${H}`}
         width={size}
         height={(size * H) / W}
-        role="img"
-        aria-label={`${shape.name} chord: ${desc}`}
+        {...(decorative
+          ? { 'aria-hidden': true }
+          : { role: 'img', 'aria-label': `${shape.name} chord: ${desc}` })}
       >
         {showName && (
           <text x={W / 2} y={14} className="cd-name">

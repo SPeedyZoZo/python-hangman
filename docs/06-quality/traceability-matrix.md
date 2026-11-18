@@ -24,5 +24,10 @@
 | FR-LRN-3                     | S4-4             | `tests/unit/progress.test.ts` (unlock)                                                                                                | ☑      |
 | FR-ONB-1…3                   | S4-7             | `tests/e2e/onboarding.spec.ts`                                                                                                        | ☑      |
 | FR-SET-*, FR-DET-5, FR-PRG-3 | S4-8             | `tests/e2e/onboarding.spec.ts` (settings persisted), manual review                                                                    | ☑      |
-| NFR-A11Y-1                   | S5-2             | `tests/e2e/a11y.spec.ts`                                                                                                              | ☐      |
-| NFR-OFF-1                    | S5-1             | build output check (`dist/sw.js`, manifest)                                                                                           | ☐      |
+| NFR-A11Y-1                   | S5-2             | `tests/e2e/a11y.spec.ts`                                                                                                              | ☑      |
+| NFR-OFF-1                    | S5-1             | `tests/e2e/offline.spec.ts` (offline reload, manifest)                                                                                | ☑      |
+
+| NFR-PERF-1 | S5 | `tests/accuracy/perf.test.ts` (≈0.5 ms/frame, budget 3 ms) | ☑ |
+| NFR-PERF-2 | S5 | build output: 123 KB gzip JS (budget 250 KB) | ☑ |
+| NFR-SEC-1, NFR-PRIV-1 | S5-4 | CSP in the build, `npm audit --omit=dev` in CI, no network calls (code review) | ☑ |
+| NFR-LEGAL-1 | S5-4 | `tests/unit/content.test.ts` (provenance, no lyrics), licence audit in the Sprint 5 QA report | ☑ |

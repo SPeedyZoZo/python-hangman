@@ -54,7 +54,11 @@ a.lesson-row:hover {
   border-color: var(--primary);
 }
 .lesson-row.locked {
-  opacity: 0.6;
+  border-style: dashed;
+  background: transparent;
+}
+.lesson-row.locked .lesson-title {
+  color: var(--text-muted);
 }
 .lesson-node {
   flex: none;

@@ -47,7 +47,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['icon.svg'],
       manifest: {
-        name: 'Strumly — Learn Guitar',
+        name: 'Strumly: Learn Guitar',
         short_name: 'Strumly',
         description: 'Learn guitar with real-time listening feedback and Wait Mode.',
         theme_color: '#14110f',

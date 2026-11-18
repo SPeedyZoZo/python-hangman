@@ -26,5 +26,5 @@ Hosts that support it should also send `Permissions-Policy: microphone=(self)`, 
 
 ## Dependency audit status
 
-- Production: `npm audit --omit=dev` shows 0 vulnerabilities (Sprint 0).
+- Production: `npm audit --omit=dev` shows 0 vulnerabilities (re-checked in Sprint 5). Licences: MIT (react, react-dom, react-router, zustand, pitchy, fft.js, scheduler, cookie, set-cookie-parser) and Apache-2.0 (idb-keyval).
 - Dev-only: glob, minimatch and picomatch ReDoS advisories in build tooling. Accepted (RAID R7) because they aren't shipped to users and are re-checked each sprint.
