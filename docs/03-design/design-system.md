@@ -55,3 +55,16 @@ Scale: 12 / 14 / 16 (body) / 20 / 24 / 32 / 40. Weights 400, 600 and 800. Fret n
 | `Stars`          | 0–3 stars with a text alternative ("2 of 3 stars")                                                                                                                                              |
 | `BottomNav`      | Learn · Songs · Chords · Tuner · Settings                                                                                                                                                       |
 | `HeardIndicator` | "Heard: G3 (string 3, open)" or "Heard: Em ✓" live text (aria-live polite, throttled)                                                                                                           |
+
+## 6. Mobile-first layout (Sprint 6, ADR-0008)
+
+The primary context is a **phone on a music stand or a knee, 30–60 cm away, both hands busy**.
+
+| Context                           | Player layout                                                                                                                                                                                                                                |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Phone portrait                    | Full-height column: compact header, mic/heard status, **highway grows to fill** (lanes 28–48 px), large feedback (1.2 rem) with Now/Next chords beside it, then a **sticky thumb-reach dock** (Wait/Play · tempo −/+ · Listen · Loop · More) |
+| Phone landscape (height ≤ 560 px) | Grid: highway left, feedback and chords right, one-row dock at the bottom                                                                                                                                                                    |
+| Tablet and desktop                | Same column at max-width 960 px. Dock on one row. Highway capped at 380 px                                                                                                                                                                   |
+
+Secondary options (metronome, on-screen guitar, loop bars, tips) live behind **More**. The lesson
+intro keeps "Let's play" in a sticky bar.

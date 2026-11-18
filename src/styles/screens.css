@@ -693,3 +693,248 @@ details summary {
   display: flex;
   align-items: center;
 }
+
+/* ── Player: mobile-first, full-height layout (FR-MOB-3) ──────────────────── */
+.page:has(.player-shell) {
+  padding-bottom: max(var(--s2), env(safe-area-inset-bottom));
+}
+.player-shell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+  min-height: calc(
+    100dvh - max(var(--s4), env(safe-area-inset-top)) - max(var(--s2), env(safe-area-inset-bottom))
+  );
+}
+.player-top {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  min-height: var(--touch);
+}
+.player-titles {
+  flex: 1;
+  min-width: 0;
+}
+.player-title {
+  font-size: 1.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.player-subtitle {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.player-top-actions {
+  flex: none;
+  flex-wrap: nowrap;
+}
+.player-status {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  font-size: 0.95rem;
+}
+.player-status .pill {
+  flex: none;
+}
+.player-status .heard {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.player-status .level-meter {
+  flex: 0 1 90px;
+}
+.player-shell .highway-card {
+  flex: 1 1 auto;
+  min-height: 220px;
+  max-height: 380px;
+  display: flex;
+}
+.player-shell .highway {
+  position: relative;
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: hidden;
+}
+.player-shell .highway svg {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.player-feedback-row {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+}
+.player-feedback-row .feedback {
+  flex: 1;
+  min-width: 0;
+  font-size: 1.2rem;
+  line-height: 1.3;
+  min-height: 2.6em;
+}
+.player-feedback-row .feedback svg {
+  flex: none;
+}
+.chord-strip {
+  flex: none;
+  gap: var(--s3);
+}
+.chord-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.player-dock {
+  position: sticky;
+  bottom: max(var(--s2), env(safe-area-inset-bottom));
+  z-index: 5;
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s2);
+  padding: var(--s2);
+  background: color-mix(in srgb, var(--surface) 96%, transparent);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+.player-dock .segmented {
+  align-self: auto;
+}
+.player-dock .seg {
+  min-height: var(--touch);
+  padding: 0 var(--s3);
+}
+.player-dock .tempo {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+}
+.player-dock .tempo .btn,
+.player-dock .dock-actions .btn {
+  min-height: var(--touch);
+}
+.player-dock .tempo-value {
+  min-width: 3.2em;
+}
+.dock-actions {
+  display: flex;
+  gap: var(--s2);
+  flex: 1 1 100%;
+}
+.dock-actions .btn {
+  flex: 1;
+}
+.player-more .row {
+  gap: var(--s2);
+}
+.sticky-actions {
+  position: sticky;
+  bottom: max(var(--s2), env(safe-area-inset-bottom));
+  padding: var(--s2) 0;
+  background: linear-gradient(to top, var(--bg) 70%, transparent);
+}
+.fretboard {
+  grid-template-rows: repeat(6, 44px);
+}
+.fret-cell {
+  min-height: 44px;
+}
+
+/* Wider screens: dock on one row. */
+@media (min-width: 640px) {
+  .dock-actions {
+    flex: 0 1 auto;
+  }
+  .dock-actions .btn {
+    flex: none;
+  }
+}
+
+/* Phones in landscape (on a music stand): highway left, feedback + chords right. */
+@media (orientation: landscape) and (max-height: 560px) {
+  .player-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(200px, 34%);
+    grid-template-rows: auto auto minmax(170px, 1fr) auto;
+    grid-template-areas:
+      'top top'
+      'status status'
+      'hw side'
+      'dock dock';
+    column-gap: var(--s3);
+    row-gap: var(--s2);
+    height: calc(
+      100dvh - max(var(--s2), env(safe-area-inset-top)) -
+        max(var(--s2), env(safe-area-inset-bottom))
+    );
+    min-height: 300px;
+  }
+  .page:has(.player-shell) {
+    padding-top: max(var(--s2), env(safe-area-inset-top));
+  }
+  .player-top {
+    grid-area: top;
+    min-height: 0;
+  }
+  .player-subtitle {
+    display: none;
+  }
+  .player-status {
+    grid-area: status;
+  }
+  .player-shell .highway-card {
+    grid-area: hw;
+    min-height: 0;
+    max-height: none;
+  }
+  .player-feedback-row {
+    grid-area: side;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    overflow: auto;
+  }
+  .player-feedback-row .feedback {
+    flex: none;
+  }
+  .player-dock {
+    grid-area: dock;
+    flex-wrap: nowrap;
+    margin-top: 0;
+    padding: var(--s1) var(--s2);
+  }
+  .dock-actions {
+    flex: 0 1 auto;
+  }
+  .player-fretboard,
+  .player-more {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Narrow phones: "Wait" / "Play" on screen, full names kept for assistive tech. */
+@media (max-width: 420px) {
+  .player-dock .seg-extra {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .player-dock .seg {
+    padding: 0 var(--s4);
+  }
+}

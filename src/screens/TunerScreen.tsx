@@ -11,6 +11,7 @@ import {
   type StringNumber,
 } from '../music/theory.ts';
 import { useListening } from '../app/useListening.ts';
+import { useWakeLock } from '../app/useWakeLock.ts';
 import { Button } from '../ui/Button.tsx';
 import { LevelMeter } from '../ui/LevelMeter.tsx';
 import { MicNotice } from '../ui/MicNotice.tsx';
@@ -33,6 +34,7 @@ export function TunerScreen() {
   }, []);
 
   const { status, mode, micError, start } = useListening({ onFrame });
+  useWakeLock(status === 'listening');
 
   const playString = async (s: StringNumber) => {
     if (status !== 'listening') await start();

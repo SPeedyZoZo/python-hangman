@@ -31,3 +31,9 @@
 | NFR-PERF-2 | S5 | build output: 123 KB gzip JS (budget 250 KB) | ☑ |
 | NFR-SEC-1, NFR-PRIV-1 | S5-4 | CSP in the build, `npm audit --omit=dev` in CI, no network calls (code review) | ☑ |
 | NFR-LEGAL-1 | S5-4 | `tests/unit/content.test.ts` (provenance, no lyrics), licence audit in the Sprint 5 QA report | ☑ |
+| FR-MOB-1, FR-MOB-2 | S6-1, S6-2 | `tests/e2e/mobile.spec.ts` (wake lock, auto-pause) | ☑ |
+| FR-MOB-3 | S6-3 | `tests/e2e/mobile-layout.spec.ts` (portrait and landscape fit), `tests/e2e/mobile.spec.ts` (44 px targets) | ☑ |
+| FR-MOB-4 | S6-4 | `tests/e2e/mobile.spec.ts` (PNG icons, apple-touch-icon) | ☑ |
+| FR-MOB-5 | S6-5 | overflow sweep at 320 and 375 px (Sprint 6 QA report), `tests/e2e/a11y.spec.ts` | ☑ |
+| FR-MOB-6 | S6-6 | manual iOS device check (release condition R2) | ◐ |
+| Keyboard shortcuts (a11y plan) | S6 | `tests/e2e/mobile.spec.ts` (W and arrow keys) | ☑ |

@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { resolvePlayable } from '../content/index.ts';
 import type { Playable } from '../content/types.ts';
@@ -41,6 +41,13 @@ function upcomingChord(steps: Step[], current?: Step): { now?: ChordId; next?: C
   return { now };
 }
 
+function isTyping(el: EventTarget | null): boolean {
+  return (
+    el instanceof HTMLElement &&
+    (el.isContentEditable || ['INPUT', 'SELECT', 'TEXTAREA'].includes(el.tagName))
+  );
+}
+
 function Player({ playable }: { playable: Playable }) {
   const p = usePractice(playable);
   const lefty = useSettings((s) => s.handedness === 'left');
@@ -48,12 +55,14 @@ function Player({ playable }: { playable: Playable }) {
   const showFretboard = useSettings((s) => s.showFretboard);
   const metronome = useSettings((s) => s.metronome);
   const setSettings = useSettings((s) => s.set);
+  const [moreOpen, setMoreOpen] = useState(false);
   const { parsed, phase } = p;
   const bars = parsed.barStarts.length;
   const hasChords = parsed.steps.some((s) => s.target.kind === 'chord');
   const current = p.currentStep;
   const chords = upcomingChord(parsed.steps, current);
   const virtual = p.listening.mode === 'virtual';
+  const backTo = playable.kind === 'song' ? '/songs' : '/';
   const loopBeats = p.loop
     ? {
         startBeat: parsed.barStarts[p.loop.startBar] ?? 0,
@@ -68,16 +77,31 @@ function Player({ playable }: { playable: Playable }) {
   );
   const distractors = CHORD_IDS.filter((c) => !usedChords.includes(c)).slice(0, 1);
 
+  // Keyboard shortcuts (docs/03-design/accessibility.md): Space play/pause, W mode, ←/→ tempo, L listen.
+  useEffect(() => {
+    if (phase === 'intro') return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.altKey || e.ctrlKey || e.metaKey || isTyping(e.target)) return;
+      if (e.key === ' ' && !(e.target instanceof HTMLButtonElement)) {
+        e.preventDefault();
+        if (phase === 'playing') p.pause();
+        else if (phase === 'paused') p.resume();
+        else if (phase === 'ready') void p.begin();
+      } else if (e.key === 'w' || e.key === 'W') p.setMode(p.mode === 'wait' ? 'play' : 'wait');
+      else if (e.key === 'ArrowLeft') p.setTempo(p.tempo - 0.1);
+      else if (e.key === 'ArrowRight') p.setTempo(p.tempo + 0.1);
+      else if (e.key === 'l' || e.key === 'L')
+        void (phase === 'listening' ? p.stopListen() : p.listen());
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [p, phase]);
+
   if (phase === 'intro') {
     return (
-      <section className="stack" aria-labelledby="player-title">
+      <section className="stack player-intro" aria-labelledby="player-title">
         <div className="row title-row">
-          <ButtonLink
-            to={playable.kind === 'song' ? '/songs' : '/'}
-            variant="ghost"
-            icon="back"
-            aria-label="Back"
-          />
+          <ButtonLink to={backTo} variant="ghost" icon="back" aria-label="Back" />
           <div>
             <p className="small muted">{playable.subtitle}</p>
             <h1 id="player-title">{playable.title}</h1>
@@ -92,7 +116,7 @@ function Player({ playable }: { playable: Playable }) {
             </div>
           </article>
         ))}
-        <div className="row">
+        <div className="row sticky-actions">
           <Button variant="primary" size="lg" icon="play" onClick={() => p.begin()}>
             Let's play
           </Button>
@@ -105,25 +129,20 @@ function Player({ playable }: { playable: Playable }) {
   }
 
   return (
-    <section className="stack player" aria-labelledby="player-title">
-      <header className="row spread">
-        <div className="row title-row">
-          <ButtonLink
-            to={playable.kind === 'song' ? '/songs' : '/'}
-            variant="ghost"
-            icon="back"
-            aria-label="Back"
-          />
-          <div>
-            <p className="small muted">{playable.subtitle}</p>
-            <h1 id="player-title" className="h2">
-              {playable.title}
-            </h1>
-          </div>
+    <section className="player-shell" aria-labelledby="player-title">
+      <header className="player-top">
+        <ButtonLink to={backTo} variant="ghost" icon="back" aria-label="Back" />
+        <div className="player-titles">
+          <p className="small muted player-subtitle">{playable.subtitle}</p>
+          <h1 id="player-title" className="player-title">
+            {playable.title}
+          </h1>
         </div>
-        <div className="row">
+        <div className="row player-top-actions">
           {phase === 'playing' && <Button icon="pause" aria-label="Pause" onClick={p.pause} />}
-          {phase === 'paused' && <Button icon="play" aria-label="Resume" onClick={p.resume} />}
+          {phase === 'paused' && (
+            <Button variant="primary" icon="play" aria-label="Resume" onClick={p.resume} />
+          )}
           {(phase === 'playing' || phase === 'paused') && (
             <Button icon="restart" aria-label="Restart" onClick={() => p.begin()} />
           )}
@@ -131,8 +150,8 @@ function Player({ playable }: { playable: Playable }) {
       </header>
 
       {p.listening.status === 'listening' && (
-        <div className="row spread status-row">
-          <MicNotice mode={p.listening.mode} micError={p.listening.micError} />
+        <div className="player-status">
+          <MicNotice mode={p.listening.mode} micError={p.listening.micError} compact />
           <span className="heard" aria-live="off">
             Heard: <strong>{p.heard || '…'}</strong>
           </span>
@@ -156,11 +175,15 @@ function Player({ playable }: { playable: Playable }) {
             {p.countIn}
           </div>
         )}
-        {(phase === 'ready' || phase === 'listening') && (
+        {(phase === 'ready' || phase === 'listening' || phase === 'paused') && (
           <div className="highway-overlay">
             {phase === 'listening' ? (
               <Button icon="pause" onClick={p.stopListen}>
                 Stop listening
+              </Button>
+            ) : phase === 'paused' ? (
+              <Button variant="primary" size="lg" icon="play" onClick={p.resume}>
+                Resume
               </Button>
             ) : (
               <Button variant="primary" size="lg" icon="play" onClick={() => p.begin()}>
@@ -171,107 +194,87 @@ function Player({ playable }: { playable: Playable }) {
         )}
       </div>
 
-      <p className={`feedback tone-${p.feedback?.tone ?? 'info'}`} role="status" aria-live="polite">
-        {p.feedback?.tone === 'good' && <Icon name="check" size={18} />}
-        {p.feedback?.tone === 'bad' && <Icon name="cross" size={18} />}
-        {p.feedback?.tone === 'warn' && <Icon name="clock" size={18} />}
-        {p.feedback?.text ??
-          (phase === 'playing' && p.mode === 'wait'
-            ? 'Take your time. The music waits for you.'
-            : ' ')}
-      </p>
+      <div className="player-feedback-row">
+        <p
+          className={`feedback tone-${p.feedback?.tone ?? 'info'}`}
+          role="status"
+          aria-live="polite"
+        >
+          {p.feedback?.tone === 'good' && <Icon name="check" size={22} />}
+          {p.feedback?.tone === 'bad' && <Icon name="cross" size={22} />}
+          {p.feedback?.tone === 'warn' && <Icon name="clock" size={22} />}
+          <span>
+            {p.feedback?.text ??
+              (phase === 'playing' && p.mode === 'wait'
+                ? 'Take your time. The music waits for you.'
+                : ' ')}
+          </span>
+        </p>
+        {hasChords && (chords.now || chords.next) && (
+          <div className="chord-strip" aria-label="Chords">
+            {chords.now && (
+              <div className="chord-slot">
+                <span className="small muted">Now</span>
+                <ChordDiagram id={chords.now} lefty={lefty} size={92} />
+              </div>
+            )}
+            {chords.next && (
+              <div className="chord-slot next-chord">
+                <span className="small muted">Next</span>
+                <ChordDiagram id={chords.next} lefty={lefty} size={74} />
+              </div>
+            )}
+          </div>
+        )}
+      </div>
 
-      {hasChords && (chords.now || chords.next) && (
-        <div className="chord-strip" aria-label="Chords">
-          {chords.now && (
-            <div className="stack center" style={{ gap: 4 }}>
-              <span className="small muted">Now</span>
-              <ChordDiagram id={chords.now} lefty={lefty} size={104} />
+      {(virtual || showFretboard) && (
+        <div className="card stack player-fretboard">
+          {hasChords && (
+            <div className="row" role="group" aria-label="Strum a chord">
+              {[...usedChords, ...distractors].map((c) => (
+                <Button key={c} size="sm" onClick={() => p.strum(c)}>
+                  Strum {c}
+                </Button>
+              ))}
             </div>
           )}
-          {chords.next && (
-            <div className="stack center next-chord" style={{ gap: 4 }}>
-              <span className="small muted">Next</span>
-              <ChordDiagram id={chords.next} lefty={lefty} size={84} />
-            </div>
-          )}
+          <Fretboard
+            lefty={lefty}
+            onPlay={p.pluck}
+            hint={
+              current?.target.kind === 'note'
+                ? { string: current.target.string, fret: current.target.fret }
+                : null
+            }
+          />
         </div>
       )}
 
-      <div className="controls card">
-        <div className="segmented" role="radiogroup" aria-label="Practice mode">
-          {(['wait', 'play'] as const).map((m) => (
-            <button
-              key={m}
-              type="button"
-              role="radio"
-              aria-checked={p.mode === m}
-              className="seg"
-              onClick={() => p.setMode(m)}
+      {moreOpen && (
+        <div className="card stack player-more" id="player-more">
+          <div className="row">
+            <Button
+              size="sm"
+              icon="metronome"
+              aria-pressed={metronome}
+              onClick={() => setSettings({ metronome: !metronome })}
             >
-              {m === 'wait' ? 'Wait Mode' : 'Play-along'}
-            </button>
-          ))}
-        </div>
-        <div className="row tempo" role="group" aria-label="Tempo">
-          <Button
-            size="sm"
-            icon="minus"
-            aria-label="Slower"
-            onClick={() => p.setTempo(p.tempo - 0.1)}
-            disabled={p.tempo <= 0.5}
-          />
-          <span className="tempo-value" aria-live="polite">
-            Tempo {Math.round(p.tempo * 100)}%
-          </span>
-          <Button
-            size="sm"
-            icon="plus"
-            aria-label="Faster"
-            onClick={() => p.setTempo(p.tempo + 0.1)}
-            disabled={p.tempo >= 1}
-          />
-        </div>
-        <div className="row">
-          <Button
-            size="sm"
-            icon="listen"
-            onClick={() => (phase === 'listening' ? p.stopListen() : p.listen())}
-          >
-            {phase === 'listening' ? 'Stop' : 'Listen'}
-          </Button>
-          <Button
-            size="sm"
-            icon="metronome"
-            aria-pressed={metronome}
-            onClick={() => setSettings({ metronome: !metronome })}
-          >
-            Metronome
-          </Button>
-          <Button
-            size="sm"
-            icon="guitar"
-            aria-pressed={showFretboard}
-            onClick={() => setSettings({ showFretboard: !showFretboard })}
-          >
-            On-screen guitar
-          </Button>
-        </div>
-        <div className="row loop-row" role="group" aria-label="Loop bars">
-          <Button
-            size="sm"
-            icon="loop"
-            aria-pressed={!!p.loop}
-            onClick={() =>
-              p.setLoop(p.loop ? null : { startBar: 0, endBar: Math.min(1, bars - 1) })
-            }
-          >
-            Loop
-          </Button>
+              Metronome
+            </Button>
+            <Button
+              size="sm"
+              icon="guitar"
+              aria-pressed={showFretboard}
+              onClick={() => setSettings({ showFretboard: !showFretboard })}
+            >
+              On-screen guitar
+            </Button>
+          </div>
           {p.loop && (
-            <>
+            <div className="row loop-row" role="group" aria-label="Loop bars">
               <label className="small">
-                from bar{' '}
+                Loop from bar{' '}
                 <select
                   value={p.loop.startBar}
                   onChange={(e) => {
@@ -302,38 +305,89 @@ function Player({ playable }: { playable: Playable }) {
                   ))}
                 </select>
               </label>
-            </>
-          )}
-        </div>
-      </div>
-
-      {(virtual || showFretboard) && (
-        <div className="card stack">
-          <h2 className="h3">On-screen guitar</h2>
-          {hasChords && (
-            <div className="row" role="group" aria-label="Strum a chord">
-              {[...usedChords, ...distractors].map((c) => (
-                <Button key={c} size="sm" onClick={() => p.strum(c)}>
-                  Strum {c}
-                </Button>
-              ))}
             </div>
           )}
-          <Fretboard
-            lefty={lefty}
-            onPlay={p.pluck}
-            hint={
-              current?.target.kind === 'note'
-                ? { string: current.target.string, fret: current.target.fret }
-                : null
-            }
-          />
+          <p className="small muted">
+            Wait Mode holds each note until you play it. Play-along keeps time and scores your
+            timing. <Link to="/tuner">Tune up first</Link> for the best results. Prop your phone
+            30–60 cm from the guitar.
+          </p>
         </div>
       )}
-      <p className="small muted">
-        Tip: Wait Mode holds each note until you play it. Play-along keeps time and scores your
-        timing. <Link to="/tuner">Tune up first</Link> for the best results.
-      </p>
+
+      <div className="player-dock" role="toolbar" aria-label="Practice controls">
+        <div className="segmented" role="radiogroup" aria-label="Practice mode">
+          {(['wait', 'play'] as const).map((m) => (
+            <button
+              key={m}
+              type="button"
+              role="radio"
+              aria-checked={p.mode === m}
+              aria-label={m === 'wait' ? 'Wait Mode' : 'Play-along'}
+              className="seg"
+              onClick={() => p.setMode(m)}
+            >
+              {m === 'wait' ? (
+                <>
+                  Wait<span className="seg-extra"> Mode</span>
+                </>
+              ) : (
+                <>
+                  Play<span className="seg-extra">-along</span>
+                </>
+              )}
+            </button>
+          ))}
+        </div>
+        <div className="tempo" role="group" aria-label="Tempo">
+          <Button
+            size="sm"
+            icon="minus"
+            aria-label="Slower"
+            onClick={() => p.setTempo(p.tempo - 0.1)}
+            disabled={p.tempo <= 0.5}
+          />
+          <span className="tempo-value" aria-live="polite">
+            <span className="visually-hidden">Tempo </span>
+            {Math.round(p.tempo * 100)}%
+          </span>
+          <Button
+            size="sm"
+            icon="plus"
+            aria-label="Faster"
+            onClick={() => p.setTempo(p.tempo + 0.1)}
+            disabled={p.tempo >= 1}
+          />
+        </div>
+        <div className="dock-actions">
+          <Button
+            size="sm"
+            icon="listen"
+            onClick={() => (phase === 'listening' ? p.stopListen() : p.listen())}
+          >
+            {phase === 'listening' ? 'Stop' : 'Listen'}
+          </Button>
+          <Button
+            size="sm"
+            icon="loop"
+            aria-pressed={!!p.loop}
+            onClick={() => {
+              p.setLoop(p.loop ? null : { startBar: 0, endBar: Math.min(1, bars - 1) });
+              if (!p.loop) setMoreOpen(true);
+            }}
+          >
+            Loop
+          </Button>
+          <Button
+            size="sm"
+            aria-expanded={moreOpen}
+            aria-controls="player-more"
+            onClick={() => setMoreOpen((o) => !o)}
+          >
+            More
+          </Button>
+        </div>
+      </div>
     </section>
   );
 }

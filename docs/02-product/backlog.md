@@ -70,6 +70,17 @@ Acceptance criteria (AC) are written as Given/When/Then shorthand.
 | S5-4 | As the sponsor I want a deployable build and docs           | Pages workflow, README, user guide, privacy and security docs                 | NFR-PRIV-1, NFR-SEC-1        | ☑      |
 | S5-5 | As the PO I want an MVP acceptance review                   | Checklist signed off in the Sprint 5 report                                   | all                          | ☑      |
 
+## Epic E6: Mobile-first optimisation (Sprint 6)
+
+| ID   | Story                                                                       | AC                                                                                 | Req      | Status                   |
+| ---- | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | -------- | ------------------------ |
+| S6-1 | As a learner with both hands on the guitar, I want the screen to stay on    | Wake lock requested while practising and released on exit (e2e with a stubbed API) | FR-MOB-1 | ☑                        |
+| S6-2 | As a learner, I want practice to pause if my phone locks                    | Hidden page → paused with a message (e2e)                                          | FR-MOB-2 | ☑                        |
+| S6-3 | As a learner with a phone on a music stand, I want everything on one screen | 375×667 portrait and 852×393 landscape: no scroll, all panels in view (e2e)        | FR-MOB-3 | ☑                        |
+| S6-4 | As a learner, I want to install Strumly like a real app                     | PNG and maskable icons, apple-touch-icon (e2e)                                     | FR-MOB-4 | ☑                        |
+| S6-5 | As a learner, I want taps to feel native                                    | Touch-action, no selection or callouts, 44 px targets (e2e), no overflow at 320 px | FR-MOB-5 | ☑                        |
+| S6-6 | As an iPhone learner, I want mic and sound together                         | `navigator.audioSession.type = 'play-and-record'` when supported                   | FR-MOB-6 | ☑ (needs a device check) |
+
 ## Icebox (post-MVP)
 
 Claude-powered conversational coach (ADR-0006) · accounts and sync · MIDI and USB input · more

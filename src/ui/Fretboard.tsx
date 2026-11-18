@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import {
   fretToMidi,
   noteName,
@@ -24,15 +25,26 @@ export function Fretboard({
   maxFret?: number;
 }) {
   const frets = Array.from({ length: maxFret + 1 }, (_, i) => i);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  // Phones show only part of the neck: keep the next note's fret in view.
+  const hintKey = hint ? `${hint.string}-${hint.fret}` : null;
+  useEffect(() => {
+    const wrap = wrapRef.current;
+    const cell = hintKey ? wrap?.querySelector<HTMLElement>(`[data-pos="${hintKey}"]`) : null;
+    if (!cell || !wrap) return;
+    const target = cell.offsetLeft - wrap.clientWidth / 2 + cell.offsetWidth / 2;
+    wrap.scrollTo?.({ left: Math.max(0, target), behavior: 'smooth' });
+  }, [hintKey]);
   return (
     <div
+      ref={wrapRef}
       className="fretboard-wrap"
       role="group"
       aria-label="On-screen guitar: tap a string and fret to play it"
     >
       <div
         className={`fretboard ${lefty ? 'lefty' : ''}`}
-        style={{ gridTemplateColumns: `repeat(${maxFret + 1}, minmax(40px, 1fr))` }}
+        style={{ gridTemplateColumns: `repeat(${maxFret + 1}, minmax(46px, 1fr))` }}
       >
         {STRINGS.map((s) =>
           frets.map((f) => {
@@ -40,6 +52,7 @@ export function Fretboard({
             return (
               <button
                 key={`${s}-${f}`}
+                data-pos={`${s}-${f}`}
                 type="button"
                 className={`fret-cell ${f === 0 ? 'open' : ''} ${isHint ? 'hint' : ''}`}
                 style={{

@@ -8,6 +8,13 @@
 2. The first launch walks you through a short setup: your experience, guitar type, which hand strums, a **microphone check** and an optional **tune-up**.
 3. Put your phone or laptop **30–60 cm from the guitar** in a quiet room. Electric guitars should play through an amp or speaker.
 
+## 1b. Using Strumly on a phone (recommended)
+
+- **Install it:** Android Chrome → menu → _Install app_. iPhone Safari → Share → _Add to Home Screen_. It then opens full-screen like a normal app and works offline.
+- **Prop the phone** on a music stand or against something, 30–60 cm from the guitar, screen facing you. Portrait and landscape both work. Landscape gives the highway more room.
+- The **screen stays on** while you practise. If the phone locks or you switch apps, the lesson **pauses** and waits for you.
+- The controls sit at the bottom, within thumb reach. Extra options are under **More**.
+
 ## 2. Tune up
 
 **Tuner** tab → _Start listening_ → pluck one string at a time. Turn the peg until the needle sits

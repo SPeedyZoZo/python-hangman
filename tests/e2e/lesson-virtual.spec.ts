@@ -10,7 +10,8 @@ test.describe('On-screen guitar without a microphone (FR-ONB-4, FR-SET-3)', () =
     await expect(page.getByText('On-screen guitar mode')).toBeVisible();
     const openE = page.getByRole('button', { name: 'String 1 (e), open: E4' });
     for (let i = 0; i < 60 && !/results/.test(page.url()); i++) {
-      await openE.click();
+      // The last pluck navigates to Results, which removes the button mid-click: don't wait on it.
+      await openE.click({ timeout: 2_000 }).catch(() => undefined);
       await page.waitForTimeout(700);
     }
     await expect(page).toHaveURL(/#\/results/);

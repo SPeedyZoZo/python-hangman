@@ -16,6 +16,7 @@ import { useProgress } from '../progress/store.ts';
 import { useSettings } from '../settings/store.ts';
 import { feedbackForResult, feedbackForWrong, type Feedback } from './feedback.ts';
 import { useListening } from './useListening.ts';
+import { useOnHidden, useWakeLock } from './useWakeLock.ts';
 
 export type Phase = 'intro' | 'ready' | 'playing' | 'paused' | 'listening';
 export type PlayMode = 'wait' | 'play';
@@ -205,6 +206,23 @@ export function usePractice(playable: Playable) {
       latencyMs,
       setPhase,
     ],
+  );
+
+  // Mobile: keep the screen on while practising or listening, and pause when the phone locks.
+  useWakeLock(phase === 'playing' || phase === 'listening' || phase === 'paused');
+  useOnHidden(
+    useCallback(() => {
+      if (phaseRef.current === 'playing') {
+        sessionRef.current?.pause(performance.now());
+        setPhase('paused');
+        setFeedback({
+          tone: 'info',
+          text: 'Paused while the screen was away. Tap play to carry on.',
+        });
+      } else if (phaseRef.current === 'listening') {
+        demoStop.current?.();
+      }
+    }, [setPhase]),
   );
 
   const pause = () => {

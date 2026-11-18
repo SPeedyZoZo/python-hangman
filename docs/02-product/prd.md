@@ -98,6 +98,17 @@ Requirement IDs are referenced by stories in the [backlog](backlog.md) and by te
 | FR-SET-2 | Note labels on gems: fret numbers or note names                              | C        |
 | FR-SET-3 | On-screen practice fretboard toggle                                          | M        |
 
+### FR-MOB: Mobile-first (added in Sprint 6 at the sponsor's request: "optimise for mobile over computers")
+
+| ID       | Requirement                                                                                                                                                                                                 | Priority |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| FR-MOB-1 | Keep the screen awake while practising, listening or tuning (Screen Wake Lock), and release it afterwards                                                                                                   | M        |
+| FR-MOB-2 | Pause practice automatically when the page is hidden (phone locked, app switched) and say why                                                                                                               | M        |
+| FR-MOB-3 | Player fits one phone screen in portrait and landscape: highway, feedback, chords and a thumb-reach control dock, with no page scroll in mic mode. Highway lanes grow with free space. Touch targets ≥44 px | M        |
+| FR-MOB-4 | Proper home-screen install: PNG icons (192, 512, maskable) and an iOS apple-touch-icon, iOS standalone meta tags, theme-coloured status bar                                                                 | M        |
+| FR-MOB-5 | Touch behaviour: no double-tap zoom, no text selection or long-press menus on playing surfaces, no pull-to-refresh, safe-area insets respected                                                              | S        |
+| FR-MOB-6 | iOS: request the `play-and-record` audio session so mic and playback work together                                                                                                                          | S        |
+
 ## 2. Non-functional requirements
 
 | ID          | Requirement                                                                                                                                                         |

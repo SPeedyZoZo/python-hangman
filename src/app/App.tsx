@@ -21,6 +21,13 @@ function useThemeAttribute() {
     const root = document.documentElement;
     if (theme === 'system') root.removeAttribute('data-theme');
     else root.setAttribute('data-theme', theme);
+    // Match the phone's browser/status bar to the chosen theme.
+    const metas = document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]');
+    metas.forEach((m) => {
+      const media = m.getAttribute('media') ?? '';
+      const own = media.includes('light') ? '#fbf7f2' : '#14110f';
+      m.content = theme === 'system' ? own : theme === 'light' ? '#fbf7f2' : '#14110f';
+    });
   }, [theme]);
 }
 

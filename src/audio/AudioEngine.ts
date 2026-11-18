@@ -110,6 +110,15 @@ class AudioEngine {
   private async openMic(): Promise<void> {
     if (!window.isSecureContext) throw new MicError('insecure', 'The microphone needs HTTPS');
     if (!navigator.mediaDevices?.getUserMedia) throw new MicError('unsupported');
+    // iOS Safari 17+: allow mic capture and playback at the same time, routed to the speaker.
+    const session = (navigator as Navigator & { audioSession?: { type: string } }).audioSession;
+    if (session) {
+      try {
+        session.type = 'play-and-record';
+      } catch {
+        /* unsupported value */
+      }
+    }
     try {
       this.stream = await navigator.mediaDevices.getUserMedia({
         audio: {

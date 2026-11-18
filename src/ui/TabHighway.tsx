@@ -3,12 +3,12 @@ import type { Step } from '../music/tab.ts';
 import { noteName, STRING_LABELS, STRINGS, type StringNumber } from '../music/theory.ts';
 import type { StepStatus } from '../practice/session.ts';
 
-const LANE_H = 30;
 const TOP = 30;
+const BOTTOM = 12;
 const GUTTER = 30;
-const HEIGHT = TOP + LANE_H * 6 + 10;
-
-export const laneY = (s: StringNumber) => TOP + (s - 1) * LANE_H + LANE_H / 2;
+/** Lanes grow with the space available (phones on a music stand need big targets), within limits. */
+const MIN_LANE = 28;
+const MAX_LANE = 48;
 
 const GLYPH: Partial<Record<StepStatus, string>> = {
   hit: '✓',
@@ -54,30 +54,43 @@ export function TabHighway({
 }: TabHighwayProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const groupRef = useRef<SVGGElement>(null);
-  const [width, setWidth] = useState(360);
+  const [size, setSize] = useState({ width: 360, height: 0 });
 
   useLayoutEffect(() => {
     const el = wrapRef.current;
     if (!el) return;
-    const ro = new ResizeObserver(([entry]) => setWidth(Math.max(280, entry!.contentRect.width)));
+    const ro = new ResizeObserver(([entry]) =>
+      setSize({
+        width: Math.max(280, entry!.contentRect.width),
+        height: entry!.contentRect.height,
+      }),
+    );
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
 
-  const hitX = Math.max(GUTTER + 44, width * 0.24);
+  const { width } = size;
+  const LANE_H = Math.round(
+    Math.min(MAX_LANE, Math.max(MIN_LANE, (size.height - TOP - BOTTOM) / 6 || MIN_LANE)),
+  );
+  const HEIGHT = TOP + LANE_H * 6 + BOTTOM;
+  const laneY = (s: StringNumber) => TOP + (s - 1) * LANE_H + LANE_H / 2;
+  const R = Math.round(LANE_H * 0.46);
+  const ppb = Math.max(pxPerBeat, Math.round(LANE_H * 2.7));
+  const hitX = Math.max(GUTTER + R + 30, width * 0.24);
 
   useEffect(() => {
     let raf = 0;
     const loopFn = () => {
-      const x = hitX - (positionRef.current ?? 0) * pxPerBeat;
+      const x = hitX - (positionRef.current ?? 0) * ppb;
       groupRef.current?.setAttribute('transform', `translate(${x.toFixed(1)} 0)`);
       raf = requestAnimationFrame(loopFn);
     };
     raf = requestAnimationFrame(loopFn);
     return () => cancelAnimationFrame(raf);
-  }, [hitX, positionRef, pxPerBeat]);
+  }, [hitX, positionRef, ppb]);
 
-  const end = totalBeats * pxPerBeat;
+  const end = totalBeats * ppb;
   void version; // statuses are read through statusOf on each render
 
   return (
@@ -102,9 +115,9 @@ export function TabHighway({
         <g ref={groupRef}>
           {loop && (
             <rect
-              x={loop.startBeat * pxPerBeat - 20}
+              x={loop.startBeat * ppb - 20}
               y={TOP - 4}
-              width={(loop.endBeat - loop.startBeat) * pxPerBeat}
+              width={(loop.endBeat - loop.startBeat) * ppb}
               height={LANE_H * 6 + 8}
               className="loop-zone"
               rx={10}
@@ -113,13 +126,13 @@ export function TabHighway({
           {barStarts.map((b, i) => (
             <g key={`bar${i}`}>
               <line
-                x1={b * pxPerBeat - 20}
-                x2={b * pxPerBeat - 20}
+                x1={b * ppb - 20}
+                x2={b * ppb - 20}
                 y1={TOP}
                 y2={TOP + LANE_H * 6}
                 className="barline"
               />
-              <text x={b * pxPerBeat - 16} y={HEIGHT - 1} className="bar-number">
+              <text x={b * ppb - 16} y={HEIGHT - 1} className="bar-number">
                 {i + 1}
               </text>
             </g>
@@ -127,18 +140,18 @@ export function TabHighway({
           <line x1={end} x2={end} y1={TOP} y2={TOP + LANE_H * 6} className="barline end" />
           {steps.map((st) => {
             const status = statusOf(st.index);
-            const x = st.beat * pxPerBeat;
+            const x = st.beat * ppb;
             const cls = `gem tone-${tone(status)}`;
             if (st.target.kind === 'note') {
               const y = laneY(st.target.string);
               const label =
                 labels === 'note' ? noteName(st.target.midi, false) : String(st.target.fret);
-              const tail = Math.max(0, st.beats * pxPerBeat - 34);
+              const tail = Math.max(0, st.beats * ppb - R * 2 - 8);
               return (
                 <g key={st.index} className={cls}>
                   {tail > 0 && (
                     <rect
-                      x={x + 10}
+                      x={x + R - 3}
                       y={y - 3}
                       width={tail}
                       height={6}
@@ -150,15 +163,20 @@ export function TabHighway({
                   <circle
                     cx={x}
                     cy={y}
-                    r={13}
+                    r={R}
                     className="gem-body"
                     style={{ stroke: `var(--string-${st.target.string})` }}
                   />
-                  <text x={x} y={y + 5} className="gem-label">
+                  <text
+                    x={x}
+                    y={y + R * 0.38}
+                    className="gem-label"
+                    style={{ fontSize: Math.round(R * 1.05) }}
+                  >
                     {label}
                   </text>
                   {GLYPH[status] && (
-                    <text x={x} y={y - 16} className="gem-glyph">
+                    <text x={x} y={y - R - 3} className="gem-glyph">
                       {GLYPH[status]}
                     </text>
                   )}
@@ -170,11 +188,11 @@ export function TabHighway({
             return (
               <g key={st.index} className={cls}>
                 <rect
-                  x={x - 13}
+                  x={x - R}
                   y={top}
-                  width={26}
+                  width={R * 2}
                   height={h}
-                  rx={13}
+                  rx={R}
                   className="gem-body chord-bar"
                 />
                 <text x={x} y={top + 20} className="strum-arrow">
