@@ -31,6 +31,7 @@ Median smoothing is applied to the MIDI of the last 3 pitched frames to kill sin
 - Match when the smoothed MIDI equals the target and |cents| ≤ 50. Octave errors (±12) are accepted only at the **easy** sensitivity.
 - **Fresh-attack rule:** the match must come after an onset that happened after the step was armed (minus a 60 ms grace period), so repeated notes need new plucks.
 - **Stability:** 2 consecutive matching frames for notes and 3 for chords.
+- **Arming** (Wait Mode): a step only listens once the song position is within 1 beat of it, so learners can't race ahead of the highway.
 - **Wrong attempt** (Wait Mode): a stable, confident pitch for 4 frames that doesn't match, after a fresh onset. It is counted once per onset.
 
 ## 4. Chord verification (`chordVerifier.ts`)

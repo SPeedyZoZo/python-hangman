@@ -2,7 +2,11 @@ import { useEffect } from 'react';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import { useSettings } from '../settings/store.ts';
 import { FullLayout, TabLayout } from '../ui/Layout.tsx';
+import { HomeScreen } from '../screens/HomeScreen.tsx';
 import { Placeholder } from '../screens/Placeholder.tsx';
+import { PlayerScreen } from '../screens/PlayerScreen.tsx';
+import { ResultsScreen } from '../screens/ResultsScreen.tsx';
+import { SongsScreen } from '../screens/SongsScreen.tsx';
 import { TunerScreen } from '../screens/TunerScreen.tsx';
 
 function useThemeAttribute() {
@@ -20,13 +24,15 @@ export function App() {
     <HashRouter>
       <Routes>
         <Route element={<TabLayout />}>
-          <Route path="/" element={<Placeholder title="Learn" />} />
-          <Route path="/songs" element={<Placeholder title="Songs" />} />
+          <Route path="/" element={<HomeScreen />} />
+          <Route path="/songs" element={<SongsScreen />} />
           <Route path="/chords" element={<Placeholder title="Chords" />} />
           <Route path="/tuner" element={<TunerScreen />} />
           <Route path="/settings" element={<Placeholder title="Settings" />} />
         </Route>
         <Route element={<FullLayout />}>
+          <Route path="/play/:kind/:id/:arr?" element={<PlayerScreen />} />
+          <Route path="/results" element={<ResultsScreen />} />
           <Route path="*" element={<Placeholder title="Not found" />} />
         </Route>
       </Routes>

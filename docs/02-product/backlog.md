@@ -27,15 +27,15 @@ Acceptance criteria (AC) are written as Given/When/Then shorthand.
 
 | ID   | Story                                                                | AC                                                                                    | Req                | Status |
 | ---- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ------------------ | ------ |
-| S2-1 | As a content author I want a compact tab DSL and a content validator | Invalid strings, frets or chords fail validation with a clear message                 | NFR-LEGAL-1        | ☐      |
-| S2-2 | As a learner I want a tab highway that shows what to play next       | Six lanes, fret-numbered gems, chord bars, hit line, smooth 60 fps transform          | FR-PLY-1           | ☐      |
-| S2-3 | As a learner I want Wait Mode                                        | The highway halts at each target and advances only on a correct, freshly plucked note | FR-PLY-2           | ☐      |
-| S2-4 | As a learner I want play-along with timing judgement                 | Perfect ≤80 ms, good ≤160 ms, early or late ≤300 ms, otherwise miss                   | FR-PLY-3           | ☐      |
-| S2-5 | As a learner I want tempo and loop controls                          | Tempo 50–100%. A–B bar loop repeats until turned off                                  | FR-PLY-4, FR-PLY-5 | ☐      |
-| S2-6 | As a learner I want to hear the exercise first                       | "Listen" plays the synthesised exercise and detection pauses meanwhile                | FR-PLY-6           | ☐      |
-| S2-7 | As a learner I want a results screen                                 | Stars, accuracy, breakdown, XP and actions                                            | FR-RES-1, FR-RES-3 | ☐      |
-| S2-8 | As a learner without a guitar I want an on-screen fretboard          | Tapping a fret injects a synthetic pluck through the analysis path                    | FR-ONB-4, FR-SET-3 | ☐      |
-| S2-9 | As a learner I want a metronome and count-in                         | Click per beat, accented downbeat, one count-in bar                                   | FR-PLY-7           | ☐      |
+| S2-1 | As a content author I want a compact tab DSL and a content validator | Invalid strings, frets or chords fail validation with a clear message                 | NFR-LEGAL-1        | ☑      |
+| S2-2 | As a learner I want a tab highway that shows what to play next       | Six lanes, fret-numbered gems, chord bars, hit line, smooth 60 fps transform          | FR-PLY-1           | ☑      |
+| S2-3 | As a learner I want Wait Mode                                        | The highway halts at each target and advances only on a correct, freshly plucked note | FR-PLY-2           | ☑      |
+| S2-4 | As a learner I want play-along with timing judgement                 | Perfect ≤80 ms, good ≤160 ms, early or late ≤300 ms, otherwise miss                   | FR-PLY-3           | ☑      |
+| S2-5 | As a learner I want tempo and loop controls                          | Tempo 50–100%. A–B bar loop repeats until turned off                                  | FR-PLY-4, FR-PLY-5 | ☑      |
+| S2-6 | As a learner I want to hear the exercise first                       | "Listen" plays the synthesised exercise and detection pauses meanwhile                | FR-PLY-6           | ☑      |
+| S2-7 | As a learner I want a results screen                                 | Stars, accuracy, breakdown, XP and actions                                            | FR-RES-1, FR-RES-3 | ☑      |
+| S2-8 | As a learner without a guitar I want an on-screen fretboard          | Tapping a fret injects a synthetic pluck through the analysis path                    | FR-ONB-4, FR-SET-3 | ☑      |
+| S2-9 | As a learner I want a metronome and count-in                         | Click per beat, accented downbeat, one count-in bar                                   | FR-PLY-7           | ☑      |
 
 ## Epic E3: Chords and strumming (Sprint 3)
 
@@ -51,10 +51,10 @@ Acceptance criteria (AC) are written as Given/When/Then shorthand.
 
 | ID   | Story                                            | AC                                                                | Req                          | Status |
 | ---- | ------------------------------------------------ | ----------------------------------------------------------------- | ---------------------------- | ------ |
-| S4-1 | As a learner I want a guided curriculum          | About 20 lessons in 5 units, validated                            | FR-LRN-2, FR-LRN-4           | ☐      |
-| S4-2 | As a learner I want public-domain songs          | At least 6 songs with provenance logged                           | FR-SNG-1, FR-SNG-2           | ☐      |
-| S4-3 | As a learner I want my progress saved            | Stars, best accuracy, XP and streak persist across reloads        | FR-PRG-1, FR-PRG-2           | ☐      |
-| S4-4 | As a learner I want a learning path with unlocks | Home path. Next lesson unlocks at 1★                              | FR-LRN-1, FR-LRN-3           | ☐      |
+| S4-1 | As a learner I want a guided curriculum          | About 20 lessons in 5 units, validated                            | FR-LRN-2, FR-LRN-4           | ☑      |
+| S4-2 | As a learner I want public-domain songs          | At least 6 songs with provenance logged                           | FR-SNG-1, FR-SNG-2           | ☑      |
+| S4-3 | As a learner I want my progress saved            | Stars, best accuracy, XP and streak persist across reloads        | FR-PRG-1, FR-PRG-2           | ☑      |
+| S4-4 | As a learner I want a learning path with unlocks | Home path. Next lesson unlocks at 1★                              | FR-LRN-1, FR-LRN-3           | ☑      |
 | S4-5 | As a learner I want specific coaching tips       | Rule engine returns 1–3 relevant tips, unit-tested per rule       | FR-RES-2                     | ☐      |
 | S4-6 | As a learner I want to ask common questions      | Offline FAQ matches keywords to answers                           | FR-RES-4                     | ☐      |
 | S4-7 | As a new user I want onboarding                  | Level, guitar type, handedness, mic check, tuner offer            | FR-ONB-1…3                   | ☐      |
