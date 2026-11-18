@@ -4,15 +4,15 @@
 
 ## Risks
 
-| ID  | Risk                                                              | P   | I   | Mitigation                                                                                                                | Owner | Status    |
-| --- | ----------------------------------------------------------------- | --- | --- | ------------------------------------------------------------------------------------------------------------------------- | ----- | --------- |
-| R1  | Real-guitar detection is worse than the synthetic benchmarks      | M   | H   | Target-aware matching, sensitivity presets, "heard" indicator, latency calibration, real-device test before public launch | DSP   | Open      |
-| R2  | Safari ignores raw-audio constraints (AGC and filters)            | H   | M   | Judge on onsets and the first 150 ms. Lenient presets. Test on iOS                                                        | DSP   | Open      |
-| R3  | Chords with shared tones (Am/C, Em/G) are confused                | M   | M   | Margin rule plus confusion benchmark. Hints                                                                               | DSP   | Open      |
-| R4  | Copyright exposure through songs                                  | L   | H   | PD or traditional only, no lyrics, provenance log                                                                         | Legal | Mitigated |
-| R5  | Mic permission denied, so the app looks broken                    | M   | M   | On-screen fretboard fallback. Clear explainer                                                                             | UXD   | Open      |
-| R6  | Scope creep (copying a large commercial app)                      | M   | M   | MoSCoW scope in the charter. Icebox                                                                                       | PO    | Open      |
-| R7  | Dev-tool dependency advisories (glob, minimatch, picomatch ReDoS) | L   | L   | Dev-only, not shipped. Production audit is clean. Re-check each sprint                                                    | Sec   | Accepted  |
+| ID  | Risk                                                              | P   | I   | Mitigation                                                                                                                                                                                            | Owner | Status    |
+| --- | ----------------------------------------------------------------- | --- | --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- | --------- |
+| R1  | Real-guitar detection is worse than the synthetic benchmarks      | M   | H   | Target-aware matching, sensitivity presets, "heard" indicator, latency calibration, real-device test before public launch                                                                             | DSP   | Open      |
+| R2  | Safari ignores raw-audio constraints (AGC and filters)            | H   | M   | Judge on onsets and the first 150 ms. Lenient presets. Test on iOS                                                                                                                                    | DSP   | Open      |
+| R3  | Chords with shared tones are confused (X vs X7, E vs Em)          | M   | M   | Note-level discrimination (ADR-0003 amendment). Confusion benchmark at 2.3% false accepts. The remaining confusions (X played when X7 expected) only affect chords in the library that no lesson uses | DSP   | Mitigated |
+| R4  | Copyright exposure through songs                                  | L   | H   | PD or traditional only, no lyrics, provenance log                                                                                                                                                     | Legal | Mitigated |
+| R5  | Mic permission denied, so the app looks broken                    | M   | M   | On-screen fretboard fallback. Clear explainer                                                                                                                                                         | UXD   | Open      |
+| R6  | Scope creep (copying a large commercial app)                      | M   | M   | MoSCoW scope in the charter. Icebox                                                                                                                                                                   | PO    | Open      |
+| R7  | Dev-tool dependency advisories (glob, minimatch, picomatch ReDoS) | L   | L   | Dev-only, not shipped. Production audit is clean. Re-check each sprint                                                                                                                                | Sec   | Accepted  |
 
 ## Assumptions
 

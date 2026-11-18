@@ -17,11 +17,11 @@ reference playback ─► outputGain ─► destination   (detection paused whil
 
 ## 2. FrameAnalyzer
 
-| Stage         | Input                      | Parameters                                                                                                         | Output                               |
-| ------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------ |
-| RMS and onset | latest 1024 samples        | noise floor 0.01 RMS (sensitivity-scaled), rise ratio ≥1.6× the average of the previous 6 frames, refractory 70 ms | `rms`, `onset: boolean`              |
-| Pitch         | latest 2048 samples        | `pitchy` MPM, clarity ≥0.85 (sensitivity-scaled), 70–1000 Hz                                                       | `{hz, midi, cents, clarity}` or null |
-| Chroma        | latest 8192 samples (Hann) | FFT magnitude^0.5, bins 60–2000 Hz, each bin's energy spread to its pitch class, L2-normalised                     | `chroma[12]`                         |
+| Stage         | Input                      | Parameters                                                                                                                                | Output                               |
+| ------------- | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
+| RMS and onset | latest 1024 samples        | noise floor 0.01 RMS (sensitivity-scaled), rise ratio ≥1.6× the average of the previous 6 frames, refractory 70 ms                        | `rms`, `onset: boolean`              |
+| Pitch         | latest 2048 samples        | `pitchy` MPM, clarity ≥0.85 (sensitivity-scaled), 70–1000 Hz                                                                              | `{hz, midi, cents, clarity}` or null |
+| Chroma        | latest 8192 samples (Hann) | FFT, local spectral peaks only, **linear magnitude, 60–800 Hz** (tuned in Sprint 3), each peak assigned to its pitch class, L2-normalised | `chroma[12]`                         |
 
 Median smoothing is applied to the MIDI of the last 3 pitched frames to kill single-frame glitches.
 
@@ -34,20 +34,28 @@ Median smoothing is applied to the MIDI of the last 3 pitched frames to kill sin
 - **Arming** (Wait Mode): a step only listens once the song position is within 1 beat of it, so learners can't race ahead of the highway.
 - **Wrong attempt** (Wait Mode): a stable, confident pitch for 4 frames that doesn't match, after a fresh onset. It is counted once per onset.
 
-## 4. Chord verification (`chordVerifier.ts`)
+## 4. Chord verification (`chordVerifier.ts`), revised in Sprint 3
 
-1. Build the expected chroma for a voicing: for each sounding string's MIDI _m_ and harmonic _h_ = 1..6, add the weight 0.75^(h−1) to the pitch class of _m_ + 12·log₂(h). Normalise.
-2. Score = cosine(observed chroma, expected chroma) for the target **and** for every other chord in the library.
-3. **Accept** when `score(target) ≥ τ` (normal 0.80) **and** `score(target) − max(score(other)) ≥ δ` (normal 0.03), within 600 ms after an onset.
-4. **Hints:** for each chord tone pitch class, _weak_ means its chroma value is below 0.35 × the strongest chord-tone value. Name the string if that pitch class is unique to one string in the voicing. **Extra:** a non-chord pitch class above 0.6 × max.
+1. **Template:** for each sounding string's MIDI _m_ and harmonic _h_ = 1..8 **with h·f₀ ≤ 800 Hz**, add the weight 0.9^(h−1) to the pitch class of _m_ + 12·log₂(h). Normalise.
+2. **Settle:** chords are judged only from **120 ms after the strum onset** (`CHORD_SETTLE_MS`). Before that, a down-strum of G7 still sounds like G.
+3. **Accept** when all of the following hold:
+   - cosine(observed, template(target)) ≥ τ;
+   - **every chord tone is present**: each tone ≥ `chordTonePresence` × the level the template predicts for it (a D without its F♯ is a D5, not a D);
+   - the target **beats every close rival** (score within 0.10) on the notes that tell them apart:
+     - both have unique notes (E vs Em: G♯ vs G): the target's unique notes are at least `chordDiscrimination` × as loud;
+     - target ⊂ rival (G vs G7): the rival's extra note must not exceed what the target's own harmonics explain by more than `chordAbsent` × the tone level;
+     - rival ⊂ target (G7 vs G): the target's extra note must exceed the rival's harmonic leak by at least `chordAbsent`/2 × the tone level.
+4. **Hints:** _missing_ tones (below the presence threshold) name the string when the note is on exactly one string. _Extra_ means a non-chord note louder than 0.6 × max and 2.5 × its harmonic expectation.
+
+**Why (Sprint 3 finding):** a string's 7th harmonic _is_ the flat 7th, so plain cosine matching confused X with X7 (67% accepts). A grid search over band, compression and template harmonics, plus note-level discrimination, raised accepts to 100%, 100% and 92% (down-strum, up-strum, noisy) with 2.3% false accepts.
 
 ## 5. Sensitivity presets
 
-| Preset | Clarity | Noise floor | τ (chord) | δ    | Octave lenient |
-| ------ | ------- | ----------- | --------- | ---- | -------------- |
-| easy   | 0.75    | 0.006       | 0.72      | 0.00 | yes            |
-| normal | 0.85    | 0.010       | 0.80      | 0.03 | no             |
-| strict | 0.92    | 0.015       | 0.86      | 0.06 | no             |
+| Preset | Clarity | Noise floor | τ (chord) | Discrimination | Absent | Tone presence | Octave lenient |
+| ------ | ------- | ----------- | --------- | -------------- | ------ | ------------- | -------------- |
+| easy   | 0.75    | 0.006       | 0.72      | 0.8            | 0.5    | 0.30          | yes            |
+| normal | 0.85    | 0.010       | 0.80      | 1.0            | 0.4    | 0.45          | no             |
+| strict | 0.92    | 0.015       | 0.86      | 1.25           | 0.3    | 0.60          | no             |
 
 ## 6. Timing
 

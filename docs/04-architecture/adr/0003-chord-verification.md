@@ -18,3 +18,10 @@ margin over every other library chord. Derive missing-tone hints from per-pitch-
 - ✓ Thresholds can be tuned per sensitivity preset.
 - ✗ Can't tell which _string_ sounded when a pitch class repeats across strings. Hints name the note in that case.
 - ✗ Chords sharing most tones (for example Am vs C) have a smaller margin. Covered by the confusion benchmark.
+
+## Amendment (Sprint 3, DSP Engineer)
+
+Benchmarks showed that cosine plus a fixed margin couldn't separate chords that differ by one note
+(X vs X7, E vs Em). We added a 60–800 Hz chroma band, richer in-band templates, a 120 ms settle
+time after strums, a chord-tone presence check, and note-level rival discrimination with
+harmonic-leak modelling. Details are in the audio engine spec §4.
