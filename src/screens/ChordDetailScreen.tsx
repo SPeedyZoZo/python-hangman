@@ -102,7 +102,7 @@ function ChordDetail({ id }: { id: ChordId }) {
 
   return (
     <section className="stack" aria-labelledby="chord-title">
-      <div className="row">
+      <div className="row title-row">
         <ButtonLink to="/chords" variant="ghost" icon="back" aria-label="All chords" />
         <div>
           <h1 id="chord-title">{id}</h1>

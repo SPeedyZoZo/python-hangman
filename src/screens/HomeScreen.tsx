@@ -2,12 +2,14 @@ import { Link } from 'react-router-dom';
 import { getLesson, LESSONS, lessonNumber, UNITS } from '../content/index.ts';
 import { currentStreak, isLessonUnlocked, localDay, nextUpLessonId } from '../progress/logic.ts';
 import { useProgress } from '../progress/store.ts';
+import { useSettings } from '../settings/store.ts';
 import { ButtonLink } from '../ui/Button.tsx';
 import { Icon } from '../ui/Icon.tsx';
 import { Stars } from '../ui/Stars.tsx';
 
 export function HomeScreen() {
   const bests = useProgress((s) => s.bests);
+  const unlockAll = useSettings((s) => s.unlockAll);
   const xp = useProgress((s) => s.xp);
   const streak = useProgress((s) => currentStreak(s.streak, localDay()));
   const nextId = nextUpLessonId(bests);
@@ -44,9 +46,14 @@ export function HomeScreen() {
         </div>
       </div>
 
-      <p className="small muted">
-        {done} of {LESSONS.length} lessons complete
-      </p>
+      <div className="row spread">
+        <p className="small muted">
+          {done} of {LESSONS.length} lessons complete
+        </p>
+        <ButtonLink to="/coach" size="sm" icon="help">
+          Ask the coach
+        </ButtonLink>
+      </div>
 
       {UNITS.map((u, ui) => {
         const unitDone = u.lessonIds.every((id) => (bests[id]?.stars ?? 0) > 0);
@@ -60,7 +67,7 @@ export function HomeScreen() {
             <ol className="lesson-list">
               {u.lessonIds.map((id) => {
                 const l = getLesson(id)!;
-                const unlocked = isLessonUnlocked(id, bests);
+                const unlocked = isLessonUnlocked(id, bests, unlockAll);
                 const stars = bests[id]?.stars ?? 0;
                 const content = (
                   <>

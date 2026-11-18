@@ -55,6 +55,12 @@
     --bad: #b3213a;
     --warn: #8a5a00;
     --shadow: 0 6px 24px rgb(60 40 20 / 0.12);
+    --string-1: #b37a00;
+    --string-2: #2a7fb8;
+    --string-3: #00785a;
+    --string-4: #8a7f00;
+    --string-5: #a8508a;
+    --string-6: #b34700;
   }
 }
 
@@ -74,4 +80,10 @@
   --bad: #b3213a;
   --warn: #8a5a00;
   --shadow: 0 6px 24px rgb(60 40 20 / 0.12);
+  --string-1: #b37a00;
+  --string-2: #2a7fb8;
+  --string-3: #00785a;
+  --string-4: #8a7f00;
+  --string-5: #a8508a;
+  --string-6: #b34700;
 }

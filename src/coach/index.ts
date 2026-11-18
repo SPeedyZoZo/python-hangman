@@ -1,8 +1,9 @@
+import { RuleBasedCoach } from './RuleBasedCoach.ts';
 import type { CoachProvider } from './types.ts';
 
-/** Placeholder until Sprint 4's RuleBasedCoach lands. */
-export const coach: CoachProvider = {
-  id: 'none',
-  getTips: async () => [],
-  ask: async () => ({ answer: 'The coach is coming soon.', source: 'fallback' }),
-};
+/**
+ * The active coach. To plug in a Claude-powered coach later (ADR-0006), implement
+ * `CoachProvider` (calling a server-side proxy, never shipping an API key) and swap it here,
+ * falling back to RuleBasedCoach when offline.
+ */
+export const coach: CoachProvider = new RuleBasedCoach();

@@ -1,5 +1,4 @@
-import { expect, test } from '@playwright/test';
-import { fakeMic } from './helpers.ts';
+import { expect, fakeMic, test } from './helpers.ts';
 
 test.use(fakeMic('strum-em.wav'));
 

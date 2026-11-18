@@ -23,6 +23,8 @@ export interface SettingsState {
   /** Show the on-screen fretboard in the player even when the mic is on. */
   showFretboard: boolean;
   metronome: boolean;
+  /** Returning players can open every lesson. */
+  unlockAll: boolean;
   set: (patch: Partial<Omit<SettingsState, 'set' | 'reset'>>) => void;
   reset: () => void;
 }
@@ -39,6 +41,7 @@ export const DEFAULT_SETTINGS = {
   virtualInput: false,
   showFretboard: false,
   metronome: true,
+  unlockAll: false,
 };
 
 /** Settings are small and needed synchronously at startup, so they use localStorage (ADR-0005). */

@@ -71,7 +71,7 @@ function Player({ playable }: { playable: Playable }) {
   if (phase === 'intro') {
     return (
       <section className="stack" aria-labelledby="player-title">
-        <div className="row">
+        <div className="row title-row">
           <ButtonLink
             to={playable.kind === 'song' ? '/songs' : '/'}
             variant="ghost"
@@ -107,7 +107,7 @@ function Player({ playable }: { playable: Playable }) {
   return (
     <section className="stack player" aria-labelledby="player-title">
       <header className="row spread">
-        <div className="row">
+        <div className="row title-row">
           <ButtonLink
             to={playable.kind === 'song' ? '/songs' : '/'}
             variant="ghost"

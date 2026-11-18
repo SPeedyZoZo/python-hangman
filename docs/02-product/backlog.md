@@ -55,10 +55,10 @@ Acceptance criteria (AC) are written as Given/When/Then shorthand.
 | S4-2 | As a learner I want public-domain songs          | At least 6 songs with provenance logged                           | FR-SNG-1, FR-SNG-2           | ☑      |
 | S4-3 | As a learner I want my progress saved            | Stars, best accuracy, XP and streak persist across reloads        | FR-PRG-1, FR-PRG-2           | ☑      |
 | S4-4 | As a learner I want a learning path with unlocks | Home path. Next lesson unlocks at 1★                              | FR-LRN-1, FR-LRN-3           | ☑      |
-| S4-5 | As a learner I want specific coaching tips       | Rule engine returns 1–3 relevant tips, unit-tested per rule       | FR-RES-2                     | ☐      |
-| S4-6 | As a learner I want to ask common questions      | Offline FAQ matches keywords to answers                           | FR-RES-4                     | ☐      |
-| S4-7 | As a new user I want onboarding                  | Level, guitar type, handedness, mic check, tuner offer            | FR-ONB-1…3                   | ☐      |
-| S4-8 | As a learner I want settings                     | Handedness, theme, labels, sensitivity, latency, fretboard, reset | FR-SET-*, FR-DET-5, FR-PRG-3 | ☐      |
+| S4-5 | As a learner I want specific coaching tips       | Rule engine returns 1–3 relevant tips, unit-tested per rule       | FR-RES-2                     | ☑      |
+| S4-6 | As a learner I want to ask common questions      | Offline FAQ matches keywords to answers                           | FR-RES-4                     | ☑      |
+| S4-7 | As a new user I want onboarding                  | Level, guitar type, handedness, mic check, tuner offer            | FR-ONB-1…3                   | ☑      |
+| S4-8 | As a learner I want settings                     | Handedness, theme, labels, sensitivity, latency, fretboard, reset | FR-SET-*, FR-DET-5, FR-PRG-3 | ☑      |
 
 ## Epic E5: Hardening and release (Sprint 5)
 

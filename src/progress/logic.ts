@@ -43,9 +43,10 @@ export function currentStreak(streak: Streak, today: string): number {
 }
 
 /** FR-LRN-3: the first lesson is open; each next one unlocks at ≥1 star on the previous. */
-export function isLessonUnlocked(lessonId: string, bests: Bests): boolean {
+export function isLessonUnlocked(lessonId: string, bests: Bests, unlockAll = false): boolean {
   const i = ORDERED_LESSONS.findIndex((l) => l.id === lessonId);
-  if (i <= 0) return i === 0;
+  if (i < 0) return false;
+  if (i === 0 || unlockAll) return true;
   const prev = ORDERED_LESSONS[i - 1]!;
   return (bests[prev.id]?.stars ?? 0) >= 1;
 }
