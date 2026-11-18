@@ -7,24 +7,28 @@ play through your device's microphone, **waits for you** on every note in Wait M
 timing in **Play-along**, and coaches you through a 21-lesson curriculum and a library of
 public-domain songs. Audio is analysed on your device and never leaves it.
 
+**▶ Try it:** https://speedyzozo.github.io/python-hangman/. Best on a phone: open it, allow the
+microphone, then _Add to Home Screen_ or _Install app_.
+
 > This repository was formerly an empty placeholder named `python-hangman`. It now hosts Strumly.
 > Renaming the GitHub repository to `strumly` is recommended.
 
 ## Features
 
-|                            |                                                                                                                                        |
-| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| 🎧 **Listens as you play** | Single notes (McLeod pitch detection) and strummed chords (harmonic-aware chroma verification), with the onset of each pluck and strum |
-| ⏸️ **Wait Mode**           | The tab highway stops at each note or chord until you play it                                                                          |
-| ⏱️ **Play-along**          | Timing judged as perfect, good, early, late or miss, with tempo 50–100%, an A–B bar loop, a metronome and a count-in                   |
-| 🔊 **Listen first**        | A synthesised reference performance with the highway animating along                                                                   |
-| 🧭 **Learning path**       | 5 units and 21 lessons, from the open high e to Em, Am, D, G, C, E, A and a mini F, plus strumming and chord changes                   |
-| 🎵 **Songs**               | 9 public-domain tunes (melody and/or chords), including Ode to Joy, Amazing Grace and Greensleeves                                     |
-| 🧑‍🏫 **Coach**               | Specific tips after each session ("In D, the F♯ isn't ringing: press your middle finger at fret 2…") and an offline "Ask the coach"    |
-| 🎼 **Tools**               | Chromatic and guitar tuner with reference tones, chord library with live "Check my chord"                                              |
-| ⭐ **Progress**            | Stars, XP, daily streak and unlocks, stored locally                                                                                    |
-| ♿ **Inclusive**           | WCAG 2.2 AA checked with axe, left-handed mode, light and dark themes, feedback never shown by colour alone                            |
-| 📴 **Works offline**       | Installable PWA. An on-screen guitar lets you try it without an instrument                                                             |
+|                            |                                                                                                                                                               |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 🎧 **Listens as you play** | Single notes (McLeod pitch detection) and strummed chords (harmonic-aware chroma verification), with the onset of each pluck and strum                        |
+| ⏸️ **Wait Mode**           | The tab highway stops at each note or chord until you play it                                                                                                 |
+| ⏱️ **Play-along**          | Timing judged as perfect, good, early, late or miss, with tempo 50–100%, an A–B bar loop, a metronome and a count-in                                          |
+| 🔊 **Listen first**        | A synthesised reference performance with the highway animating along                                                                                          |
+| 🧭 **Learning path**       | 5 units and 21 lessons, from the open high e to Em, Am, D, G, C, E, A and a mini F, plus strumming and chord changes                                          |
+| 🎵 **Songs**               | 9 public-domain tunes (melody and/or chords), including Ode to Joy, Amazing Grace and Greensleeves                                                            |
+| 🧑‍🏫 **Coach**               | Specific tips after each session ("In D, the F♯ isn't ringing: press your middle finger at fret 2…") and an offline "Ask the coach"                           |
+| 🎼 **Tools**               | Chromatic and guitar tuner with reference tones, chord library with live "Check my chord"                                                                     |
+| ⭐ **Progress**            | Stars, XP, daily streak and unlocks, stored locally                                                                                                           |
+| ♿ **Inclusive**           | WCAG 2.2 AA checked with axe, left-handed mode, light and dark themes, feedback never shown by colour alone                                                   |
+| 📱 **Mobile-first**        | One-screen player in portrait and landscape, thumb-reach controls, screen stays awake, auto-pause when the phone locks, home-screen install with proper icons |
+| 📴 **Works offline**       | Installable PWA. An on-screen guitar lets you try it without an instrument                                                                                    |
 
 ## Quick start
 

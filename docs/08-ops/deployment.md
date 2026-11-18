@@ -11,6 +11,11 @@ Use `BASE_PATH=/<repo>/ npm run build` for sub-path hosting such as GitHub Pages
 
 On every push and PR: `npm ci`, typecheck, lint, test (unit and accuracy), build.
 
+## Live site
+
+**https://speedyzozo.github.io/python-hangman/** (GitHub Pages, deployed from branch `ccr-7c43b1a1-kunrlh`).
+Redeploy at any time: Actions → "Deploy to GitHub Pages" → _Run workflow_.
+
 ## GitHub Pages (`.github/workflows/deploy.yml`)
 
 Manual trigger (`workflow_dispatch`). It builds with `BASE_PATH=/<repo-name>/` and publishes
