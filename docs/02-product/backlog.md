@@ -16,12 +16,12 @@ Acceptance criteria (AC) are written as Given/When/Then shorthand.
 
 | ID   | Story                                                                                 | AC                                                                                                         | Req                 | Status |
 | ---- | ------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ------------------- | ------ |
-| S1-1 | As a developer I want music-theory utilities (midi↔Hz↔name, tunings, fret→midi)       | Unit tests cover all strings, frets 0–24, and round trips                                                  | FR-DET-1            | ☐      |
-| S1-2 | As a learner I want the app to hear single notes accurately                           | Benchmark ≥95% across strings 1–6, frets 0–12, with noise and detune                                       | FR-DET-1, NFR-ACC-1 | ☐      |
-| S1-3 | As a learner I want a tuner so my guitar is in tune before practice                   | Shows note, string and cents. "In tune" within ±5 cents held 0.5 s. E2e: fake-mic E2 reads "E" on string 6 | FR-TUN-1, FR-TUN-2  | ☐      |
-| S1-4 | As a learner I want to hear reference tones                                           | Tapping a string plays a synthesised pluck at the right pitch                                              | FR-TUN-3            | ☐      |
-| S1-5 | As a developer I want a synthetic guitar (Karplus-Strong) and a WAV fixture generator | `npm run fixtures` writes WAVs. The synth is used by tests and "Listen"                                    | —                   | ☐      |
-| S1-6 | As a learner I want each new pluck to count separately                                | Onset detector fires once per pluck (±1) on a pluck-train fixture                                          | FR-DET-3            | ☐      |
+| S1-1 | As a developer I want music-theory utilities (midi↔Hz↔name, tunings, fret→midi)       | Unit tests cover all strings, frets 0–24, and round trips                                                  | FR-DET-1            | ☑      |
+| S1-2 | As a learner I want the app to hear single notes accurately                           | Benchmark ≥95% across strings 1–6, frets 0–12, with noise and detune                                       | FR-DET-1, NFR-ACC-1 | ☑      |
+| S1-3 | As a learner I want a tuner so my guitar is in tune before practice                   | Shows note, string and cents. "In tune" within ±5 cents held 0.5 s. E2e: fake-mic E2 reads "E" on string 6 | FR-TUN-1, FR-TUN-2  | ☑      |
+| S1-4 | As a learner I want to hear reference tones                                           | Tapping a string plays a synthesised pluck at the right pitch                                              | FR-TUN-3            | ☑      |
+| S1-5 | As a developer I want a synthetic guitar (Karplus-Strong) and a WAV fixture generator | `npm run fixtures` writes WAVs. The synth is used by tests and "Listen"                                    | —                   | ☑      |
+| S1-6 | As a learner I want each new pluck to count separately                                | Onset detector fires once per pluck (±1) on a pluck-train fixture                                          | FR-DET-3            | ☑      |
 
 ## Epic E2: Practice engine (Sprint 2)
 

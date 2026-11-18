@@ -4,10 +4,10 @@
 
 | Requirement         | Story            | Test(s)                                                           | Status |
 | ------------------- | ---------------- | ----------------------------------------------------------------- | ------ |
-| FR-DET-1, NFR-ACC-1 | S1-1, S1-2       | `tests/unit/theory.test.ts`, `tests/accuracy/notes.test.ts`       | ☐      |
-| FR-DET-3            | S1-6             | `tests/accuracy/onset.test.ts`                                    | ☐      |
-| FR-TUN-1/2          | S1-3             | `tests/unit/tuner.test.ts`, `tests/e2e/tuner.spec.ts`             | ☐      |
-| FR-TUN-3            | S1-4             | `tests/unit/synth.test.ts`                                        | ☐      |
+| FR-DET-1, NFR-ACC-1 | S1-1, S1-2       | `tests/unit/theory.test.ts`, `tests/accuracy/notes.test.ts`       | ☑      |
+| FR-DET-3            | S1-6             | `tests/accuracy/onset.test.ts`                                    | ☑      |
+| FR-TUN-1/2          | S1-3             | `tests/unit/tuner.test.ts`, `tests/e2e/tuner.spec.ts`             | ☑      |
+| FR-TUN-3            | S1-4             | `tests/unit/synth.test.ts`                                        | ☑      |
 | NFR-LEGAL-1         | S2-1, S4-1, S4-2 | `tests/unit/tab.test.ts`, `tests/unit/content.test.ts`            | ☐      |
 | FR-PLY-2            | S2-3             | `tests/unit/session.test.ts` (wait), `tests/e2e/lesson.spec.ts`   | ☐      |
 | FR-PLY-3            | S2-4             | `tests/unit/session.test.ts` (play), `tests/unit/scoring.test.ts` | ☐      |
