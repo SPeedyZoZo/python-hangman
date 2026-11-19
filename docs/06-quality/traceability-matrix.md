@@ -37,3 +37,6 @@
 | FR-MOB-5 | S6-5 | overflow sweep at 320 and 375 px (Sprint 6 QA report), `tests/e2e/a11y.spec.ts` | ☑ |
 | FR-MOB-6 | S6-6 | manual iOS device check (release condition R2) | ◐ |
 | Keyboard shortcuts (a11y plan) | S6 | `tests/e2e/mobile.spec.ts` (W and arrow keys) | ☑ |
+| FR-MOB-7 | S7-1 | `tests/e2e/mobile-layout.spec.ts` (on-screen guitar fits, 4 cases) | ☑ |
+| FR-MOB-8, FR-MOB-9 | S7-2, S7-3 | `tests/e2e/mobile.spec.ts` (fullscreen and haptics, 3 cases) | ☑ |
+| NFR-PERF-2 (revised) | S7-4 | `scripts/check-size.ts` (`npm run size`, CI), `tests/e2e/offline.spec.ts` (lazy chunks precached) | ☑ |

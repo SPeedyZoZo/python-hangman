@@ -26,3 +26,4 @@ plus a manual keyboard pass recorded in the Sprint 5 QA report.
 
 - On narrow phones the mode switch shows "Wait" and "Play". Each radio keeps an explicit `aria-label` ("Wait Mode", "Play-along"), because a visually-hidden suffix produced the name "Play -along" in Chromium.
 - Dock controls and fretboard cells are at least 44 × 44 px (e2e-checked).
+- Sprint 7: icon-only dock buttons (on-screen guitar mode, wide screens) keep `aria-label`s. The Full screen toggle uses `aria-pressed`. Vibration is never the only feedback, because every tap still produces sound and on-screen feedback.

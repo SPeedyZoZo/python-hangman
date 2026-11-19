@@ -938,3 +938,111 @@ details summary {
     padding: 0 var(--s4);
   }
 }
+
+/* ── Player with the on-screen guitar (FR-MOB-7): everything on one phone screen ── */
+.player-fretboard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+}
+.strum-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+}
+.strum-row .btn {
+  flex: 1 1 30%;
+  min-height: var(--touch);
+}
+.player-shell--input .fretboard-wrap {
+  padding-bottom: 0;
+}
+.player-shell--input .fretboard {
+  min-width: 0;
+}
+.player-shell--input .highway-card {
+  min-height: 150px;
+  max-height: 300px;
+}
+.player-shell--input .player-feedback-row .feedback {
+  font-size: 1.05rem;
+  min-height: 1.4em;
+}
+.player-shell--input .chord-strip .chord-diagram,
+.player-shell--input .chord-strip .chord-diagram svg {
+  width: 60px !important;
+  height: auto !important;
+}
+.player-shell--input .chord-slot .small {
+  display: none;
+}
+/* Dock on one row with icon-only secondary actions (names stay in aria-label), where it fits. */
+@media (min-width: 480px) {
+  .player-shell--input .player-dock {
+    flex-wrap: nowrap;
+    padding: var(--s1) var(--s2);
+  }
+  .player-shell--input .dock-actions {
+    flex: 0 0 auto;
+    gap: var(--s1);
+  }
+  .player-shell--input .dock-actions .btn {
+    flex: none;
+    padding: 0;
+    width: var(--touch);
+  }
+  .player-shell--input .dock-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .player-shell--input .player-dock .seg {
+    padding: 0 var(--s3);
+  }
+  .player-shell--input .seg-extra {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  .player-shell--input {
+    grid-template-rows: auto minmax(120px, 1fr) auto auto;
+    grid-template-areas:
+      'top top'
+      'hw input'
+      'fb input'
+      'dock dock';
+  }
+  .player-shell--input .player-fretboard {
+    grid-area: input;
+    grid-column: auto;
+    align-self: center;
+    overflow: hidden;
+  }
+  .player-shell--input .player-feedback-row {
+    grid-area: fb;
+    flex-direction: row;
+    align-items: center;
+    overflow: visible;
+  }
+  .player-shell--input .chord-strip {
+    display: none;
+  }
+  .player-shell--input .fretboard {
+    grid-template-rows: repeat(6, 40px);
+  }
+  .player-shell--input .fret-cell {
+    min-height: 40px;
+  }
+  .player-shell--input .player-more {
+    grid-column: 1 / -1;
+  }
+}

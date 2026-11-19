@@ -23,7 +23,11 @@ for (const [src, out, size] of jobs) {
   await page.setContent(
     `<html><body style="margin:0;background:transparent"><img src="data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}" width="${size}" height="${size}" style="display:block"></body></html>`,
   );
-  await page.screenshot({ path: join(pub, out), omitBackground: true, clip: { x: 0, y: 0, width: size, height: size } });
+  await page.screenshot({
+    path: join(pub, out),
+    omitBackground: true,
+    clip: { x: 0, y: 0, width: size, height: size },
+  });
   console.log(`wrote public/${out}`);
 }
 await browser.close();

@@ -19,7 +19,8 @@
     "test:watch": "vitest",
     "fixtures": "node --experimental-strip-types scripts/gen-fixtures.ts",
     "e2e": "npm run build && npm run fixtures && playwright test --trace off",
-    "check": "npm run typecheck && npm run lint && npm test && npm run build"
+    "check": "npm run typecheck && npm run lint && npm test && npm run build",
+    "size": "node --experimental-strip-types scripts/check-size.ts"
   },
   "dependencies": {
     "idb-keyval": "^6.3.0",

@@ -38,6 +38,8 @@ export interface TabHighwayProps {
   labels: 'fret' | 'note';
   loop?: { startBeat: number; endBeat: number } | null;
   pxPerBeat?: number;
+  /** Smallest lane height in px (lower when the on-screen guitar shares the screen). */
+  minLane?: number;
 }
 
 /** Scrolling tab highway (ADR-0007): string 1 on top, notes as fret-numbered gems. */
@@ -51,6 +53,7 @@ export function TabHighway({
   labels,
   loop,
   pxPerBeat = 84,
+  minLane = MIN_LANE,
 }: TabHighwayProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const groupRef = useRef<SVGGElement>(null);
@@ -71,7 +74,7 @@ export function TabHighway({
 
   const { width } = size;
   const LANE_H = Math.round(
-    Math.min(MAX_LANE, Math.max(MIN_LANE, (size.height - TOP - BOTTOM) / 6 || MIN_LANE)),
+    Math.min(MAX_LANE, Math.max(minLane, (size.height - TOP - BOTTOM) / 6 || minLane)),
   );
   const HEIGHT = TOP + LANE_H * 6 + BOTTOM;
   const laneY = (s: StringNumber) => TOP + (s - 1) * LANE_H + LANE_H / 2;

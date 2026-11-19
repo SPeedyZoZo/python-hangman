@@ -99,3 +99,68 @@ test('keyboard shortcuts: W switches mode, arrows change tempo', async ({ page }
   await page.keyboard.press('ArrowRight');
   await expect(page.getByRole('group', { name: 'Tempo' })).toContainText('80%');
 });
+
+test.describe('fullscreen and haptics (FR-MOB-8, FR-MOB-9)', () => {
+  test.use({ settings: { virtualInput: true } });
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+      const w = window as unknown as { __vibrations: unknown[]; __fullscreen: number };
+      w.__vibrations = [];
+      w.__fullscreen = 0;
+      Object.defineProperty(navigator, 'vibrate', {
+        configurable: true,
+        value: (p: unknown) => {
+          w.__vibrations.push(p);
+          return true;
+        },
+      });
+      Object.defineProperty(document, 'fullscreenEnabled', { configurable: true, get: () => true });
+      Element.prototype.requestFullscreen = async function () {
+        w.__fullscreen++;
+        Object.defineProperty(document, 'fullscreenElement', {
+          configurable: true,
+          get: () => document.documentElement,
+        });
+        document.dispatchEvent(new Event('fullscreenchange'));
+      };
+    });
+  });
+
+  test('tapping the on-screen guitar gives a short vibration', async ({ page }) => {
+    await page.goto('/#/play/lesson/u1-open-e');
+    await page.getByRole('button', { name: "Let's play" }).click();
+    await page.getByRole('button', { name: 'String 1 (e), open: E4' }).click();
+    await expect
+      .poll(() =>
+        page.evaluate(() => (window as unknown as { __vibrations: unknown[] }).__vibrations.length),
+      )
+      .toBeGreaterThan(0);
+  });
+
+  test('no vibration when haptics are switched off', async ({ page }) => {
+    await page.goto('/#/settings');
+    await page.getByRole('switch', { name: /Vibrate on taps/ }).uncheck();
+    await page.goto('/#/play/lesson/u1-open-e');
+    await page.getByRole('button', { name: "Let's play" }).click();
+    await page.getByRole('button', { name: 'String 1 (e), open: E4' }).click();
+    await page.waitForTimeout(300);
+    expect(
+      await page.evaluate(
+        () => (window as unknown as { __vibrations: unknown[] }).__vibrations.length,
+      ),
+    ).toBe(0);
+  });
+
+  test('Full screen button enters fullscreen and shows its pressed state', async ({ page }) => {
+    await page.goto('/#/play/song/ode-to-joy/melody');
+    const btn = page.getByRole('button', { name: 'Full screen' });
+    await btn.click();
+    expect(
+      await page.evaluate(() => (window as unknown as { __fullscreen: number }).__fullscreen),
+    ).toBe(1);
+    await expect(page.getByRole('button', { name: 'Exit full screen' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+  });
+});

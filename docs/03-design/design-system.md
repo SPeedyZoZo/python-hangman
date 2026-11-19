@@ -68,3 +68,16 @@ The primary context is a **phone on a music stand or a knee, 30–60 cm away, bo
 
 Secondary options (metronome, on-screen guitar, loop bars, tips) live behind **More**. The lesson
 intro keeps "Let's play" in a sticky bar.
+
+### 6.1 On-screen guitar mode (Sprint 7)
+
+When the on-screen guitar is showing, the player switches to `player-shell--input`:
+
+- The status row goes. The mic message moves to the start overlay and the More panel.
+- The highway minimum lane drops to 20 px.
+- Feedback goes on one line, with small chord diagrams.
+- Only the input the exercise needs is shown: a fretboard of frets 0 to (highest used + 1), or Strum buttons.
+- At 480 px and wider, the dock is one row with icon-only Listen, Loop and More.
+- In landscape, the input sits to the right of the highway.
+
+The player header adds a **Full screen** toggle (expand/shrink icon, `aria-pressed`) where supported.

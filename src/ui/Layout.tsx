@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { Icon, type IconName } from './Icon.tsx';
 
@@ -16,7 +17,9 @@ export function TabLayout() {
         Skip to content
       </a>
       <main id="main" className="page with-nav" tabIndex={-1}>
-        <Outlet />
+        <Suspense fallback={<RouteFallback />}>
+          <Outlet />
+        </Suspense>
       </main>
       <nav className="bottom-nav" aria-label="Main">
         {TABS.map((t) => (
@@ -34,8 +37,19 @@ export function FullLayout() {
   return (
     <div className="app-shell">
       <main id="main" className="page" tabIndex={-1}>
-        <Outlet />
+        <Suspense fallback={<RouteFallback />}>
+          <Outlet />
+        </Suspense>
       </main>
     </div>
+  );
+}
+
+/** Shown for the moment a screen's code is still downloading (first visit on a slow connection). */
+function RouteFallback() {
+  return (
+    <p className="route-fallback muted" role="status">
+      Loading…
+    </p>
   );
 }

@@ -31,7 +31,7 @@
 
 ## Dependencies
 
-| ID  | Dependency                                                                     |
-| --- | ------------------------------------------------------------------------------ |
-| D1  | The sponsor tests on a real guitar and phone before any public launch          |
-| D2  | GitHub Pages must be enabled by the sponsor for the deploy workflow to publish |
+| ID  | Dependency                                                                                                    |
+| --- | ------------------------------------------------------------------------------------------------------------- |
+| D1  | The sponsor tests on a real guitar and phone before any public launch                                         |
+| D2  | GitHub Pages enabled by the sponsor (Sprint 7). Live at https://speedyzozo.github.io/python-hangman/ (closed) |

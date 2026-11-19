@@ -25,6 +25,8 @@ export interface SettingsState {
   metronome: boolean;
   /** Returning players can open every lesson. */
   unlockAll: boolean;
+  /** Vibrate on on-screen-guitar taps and wrong attempts (never in microphone mode). */
+  haptics: boolean;
   set: (patch: Partial<Omit<SettingsState, 'set' | 'reset'>>) => void;
   reset: () => void;
 }
@@ -42,6 +44,7 @@ export const DEFAULT_SETTINGS = {
   showFretboard: false,
   metronome: true,
   unlockAll: false,
+  haptics: true,
 };
 
 /** Settings are small and needed synchronously at startup, so they use localStorage (ADR-0005). */

@@ -17,6 +17,7 @@ import { useSettings } from '../settings/store.ts';
 import { feedbackForResult, feedbackForWrong, type Feedback } from './feedback.ts';
 import { useListening } from './useListening.ts';
 import { useOnHidden, useWakeLock } from './useWakeLock.ts';
+import { HAPTIC, haptic } from './device.ts';
 
 export type Phase = 'intro' | 'ready' | 'playing' | 'paused' | 'listening';
 export type PlayMode = 'wait' | 'play';
@@ -94,6 +95,7 @@ export function usePractice(playable: Playable) {
           const step = parsed.steps[e.result.index];
           if (step && s.mode !== 'demo') setFeedback(feedbackForResult(e.result));
         } else if (e.type === 'wrong') {
+          if (audioEngine.mode === 'virtual') haptic(HAPTIC.wrong);
           const step = parsed.steps[e.index];
           if (step) setFeedback(feedbackForWrong(step, e.heardMidi, e.hints));
         } else if (e.type === 'loop') {
@@ -307,6 +309,7 @@ export function usePractice(playable: Playable) {
 
   /** Virtual guitar input: pluck a note into the analyser (and speakers). */
   const pluck = async (string: StringNumber, fret: number) => {
+    if (audioEngine.mode !== 'mic') haptic(HAPTIC.tap); // never buzz into a live mic
     await audioEngine.ensureContext();
     const midi = fretToMidi(string, fret);
     audioEngine.inject(
@@ -320,6 +323,7 @@ export function usePractice(playable: Playable) {
   };
 
   const strum = async (chord: ChordId) => {
+    if (audioEngine.mode !== 'mic') haptic(HAPTIC.tap); // never buzz into a live mic
     await audioEngine.ensureContext();
     const step: Step = {
       index: 0,

@@ -100,27 +100,30 @@ Requirement IDs are referenced by stories in the [backlog](backlog.md) and by te
 
 ### FR-MOB: Mobile-first (added in Sprint 6 at the sponsor's request: "optimise for mobile over computers")
 
-| ID       | Requirement                                                                                                                                                                                                 | Priority |
-| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| FR-MOB-1 | Keep the screen awake while practising, listening or tuning (Screen Wake Lock), and release it afterwards                                                                                                   | M        |
-| FR-MOB-2 | Pause practice automatically when the page is hidden (phone locked, app switched) and say why                                                                                                               | M        |
-| FR-MOB-3 | Player fits one phone screen in portrait and landscape: highway, feedback, chords and a thumb-reach control dock, with no page scroll in mic mode. Highway lanes grow with free space. Touch targets ≥44 px | M        |
-| FR-MOB-4 | Proper home-screen install: PNG icons (192, 512, maskable) and an iOS apple-touch-icon, iOS standalone meta tags, theme-coloured status bar                                                                 | M        |
-| FR-MOB-5 | Touch behaviour: no double-tap zoom, no text selection or long-press menus on playing surfaces, no pull-to-refresh, safe-area insets respected                                                              | S        |
-| FR-MOB-6 | iOS: request the `play-and-record` audio session so mic and playback work together                                                                                                                          | S        |
+| ID       | Requirement                                                                                                                                                                                                         | Priority |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| FR-MOB-1 | Keep the screen awake while practising, listening or tuning (Screen Wake Lock), and release it afterwards                                                                                                           | M        |
+| FR-MOB-2 | Pause practice automatically when the page is hidden (phone locked, app switched) and say why                                                                                                                       | M        |
+| FR-MOB-3 | Player fits one phone screen in portrait and landscape: highway, feedback, chords and a thumb-reach control dock, with no page scroll in mic mode. Highway lanes grow with free space. Touch targets ≥44 px         | M        |
+| FR-MOB-4 | Proper home-screen install: PNG icons (192, 512, maskable) and an iOS apple-touch-icon, iOS standalone meta tags, theme-coloured status bar                                                                         | M        |
+| FR-MOB-5 | Touch behaviour: no double-tap zoom, no text selection or long-press menus on playing surfaces, no pull-to-refresh, safe-area insets respected                                                                      | S        |
+| FR-MOB-6 | iOS: request the `play-and-record` audio session so mic and playback work together                                                                                                                                  | S        |
+| FR-MOB-7 | On-screen guitar mode also fits one phone screen: only the input the exercise needs (fretboard frets 0 to highest+1, or Strum buttons), a smaller minimum highway, and a compact dock where space allows (Sprint 7) | M        |
+| FR-MOB-8 | A Full screen button in the player where the browser supports it and the app isn't already installed full-screen (Sprint 7)                                                                                         | S        |
+| FR-MOB-9 | Short vibration on on-screen-guitar taps and wrong attempts, switchable in Settings, never while the microphone listens (Sprint 7)                                                                                  | S        |
 
 ## 2. Non-functional requirements
 
-| ID          | Requirement                                                                                                                                                         |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| NFR-PERF-1  | Analysis loop runs at ≥30 fps on a mid-range phone. Feedback latency is ≤150 ms after onset (excluding device input latency)                                        |
-| NFR-PERF-2  | Initial JS bundle ≤250 KB gzip. Interactive within 3 s on a 4G mid-range phone                                                                                      |
-| NFR-ACC-1   | Detection benchmark: ≥95% single-note correctness (strings 1–6, frets 0–12, with noise and detune). ≥90% chord verification. <5% false accepts on confusable chords |
-| NFR-A11Y-1  | WCAG 2.2 AA: contrast, keyboard operability, focus visibility, labels. No axe "serious" or "critical" violations                                                    |
-| NFR-A11Y-2  | Feedback is conveyed by colour **and** icon or shape **and** text. Respects `prefers-reduced-motion`                                                                |
-| NFR-PRIV-1  | No audio or analysis data leaves the device. No third-party trackers                                                                                                |
-| NFR-SEC-1   | Strict Content Security Policy. No `eval`. Dependencies are audited and production has no high or critical advisories                                               |
-| NFR-OFF-1   | Installable PWA that works fully offline after the first load                                                                                                       |
-| NFR-RESP-1  | Phone-first layout from 320 px wide up to desktop                                                                                                                   |
-| NFR-COMP-1  | Latest Chrome, Edge, Firefox and Safari (desktop and iOS 17+)                                                                                                       |
-| NFR-LEGAL-1 | Content is public domain, traditional or original, with provenance recorded. Dependencies use permissive licences                                                   |
+| ID          | Requirement                                                                                                                                                                                       |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| NFR-PERF-1  | Analysis loop runs at ≥30 fps on a mid-range phone. Feedback latency is ≤150 ms after onset (excluding device input latency)                                                                      |
+| NFR-PERF-2  | First-screen JavaScript ≤100 KB gzip, enforced by `npm run size` in CI (was a single 123 KB bundle before Sprint 7). Other screens load on demand. Interactive within 3 s on a 4G mid-range phone |
+| NFR-ACC-1   | Detection benchmark: ≥95% single-note correctness (strings 1–6, frets 0–12, with noise and detune). ≥90% chord verification. <5% false accepts on confusable chords                               |
+| NFR-A11Y-1  | WCAG 2.2 AA: contrast, keyboard operability, focus visibility, labels. No axe "serious" or "critical" violations                                                                                  |
+| NFR-A11Y-2  | Feedback is conveyed by colour **and** icon or shape **and** text. Respects `prefers-reduced-motion`                                                                                              |
+| NFR-PRIV-1  | No audio or analysis data leaves the device. No third-party trackers                                                                                                                              |
+| NFR-SEC-1   | Strict Content Security Policy. No `eval`. Dependencies are audited and production has no high or critical advisories                                                                             |
+| NFR-OFF-1   | Installable PWA that works fully offline after the first load                                                                                                                                     |
+| NFR-RESP-1  | Phone-first layout from 320 px wide up to desktop                                                                                                                                                 |
+| NFR-COMP-1  | Latest Chrome, Edge, Firefox and Safari (desktop and iOS 17+)                                                                                                                                     |
+| NFR-LEGAL-1 | Content is public domain, traditional or original, with provenance recorded. Dependencies use permissive licences                                                                                 |

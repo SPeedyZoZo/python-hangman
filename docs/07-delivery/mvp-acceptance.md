@@ -31,7 +31,7 @@
 
 1. **D1 / R1: real-device test** by the sponsor: real guitar, phone and laptop, quiet and noisy rooms. Adjust the sensitivity presets in `sensitivity.ts` if needed.
 2. **R2: iOS Safari check** of mic capture (processing may stay on). Use the _Easy_ preset if notes are missed.
-3. **D2:** enable GitHub Pages (Settings → Pages → Source: GitHub Actions) and run the "Deploy to GitHub Pages" workflow. Optionally rename the repository to `strumly`.
+3. ~~**D2:** enable GitHub Pages~~ **Done (Sprint 7):** live at https://speedyzozo.github.io/python-hangman/. Optionally rename the repository to `strumly`.
 
 ## Known limitations (accepted for MVP)
 

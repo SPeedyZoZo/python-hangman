@@ -7,7 +7,7 @@ test.describe('On-screen guitar without a microphone (FR-ONB-4, FR-SET-3)', () =
     test.setTimeout(90_000);
     await page.goto('/#/play/lesson/u1-open-e');
     await page.getByRole('button', { name: "Let's play" }).click();
-    await expect(page.getByText('On-screen guitar mode')).toBeVisible();
+    await expect(page.getByRole('group', { name: /On-screen guitar/ })).toBeVisible();
     const openE = page.getByRole('button', { name: 'String 1 (e), open: E4' });
     for (let i = 0; i < 60 && !/results/.test(page.url()); i++) {
       // The last pluck navigates to Results, which removes the button mid-click: don't wait on it.

@@ -27,3 +27,6 @@
 | D-021 | Sprint 6 | Mobile-first player: full-height column or landscape grid, sticky dock, height-scaled highway                                   | Sponsor, UXD, Architect | ADR-0008             |
 | D-022 | Sprint 6 | Screen Wake Lock during listening screens, auto-pause on hide                                                                   | PO, FE                  | FR-MOB-1/2           |
 | D-023 | Sprint 6 | PNG icons rendered from the SVGs at dev time (`scripts/gen-icons.ts`) and committed                                             | DevOps                  | FR-MOB-4             |
+| D-024 | Sprint 7 | On-screen guitar shows only the input an exercise needs, with the fretboard limited to the frets used                           | UXD, FE                 | FR-MOB-7             |
+| D-025 | Sprint 7 | Haptics only in on-screen-guitar mode (vibration would leak into the mic)                                                       | DSP, UXD                | FR-MOB-9             |
+| D-026 | Sprint 7 | Route-level code splitting with idle prefetch; first-screen JS budget 100 KB gzip in CI                                         | Architect, DevOps       | ADR-0009             |

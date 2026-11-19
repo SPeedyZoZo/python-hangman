@@ -81,6 +81,15 @@ Acceptance criteria (AC) are written as Given/When/Then shorthand.
 | S6-5 | As a learner, I want taps to feel native                                    | Touch-action, no selection or callouts, 44 px targets (e2e), no overflow at 320 px | FR-MOB-5 | ☑                        |
 | S6-6 | As an iPhone learner, I want mic and sound together                         | `navigator.audioSession.type = 'play-and-record'` when supported                   | FR-MOB-6 | ☑ (needs a device check) |
 
+## Epic E7: Mobile extras (Sprint 7)
+
+| ID   | Story                                                                                           | AC                                                                                                                   | Req        | Status |
+| ---- | ----------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ---------- | ------ |
+| S7-1 | As a learner without my guitar, I want the on-screen guitar and the highway on one phone screen | 375×667 and 852×393, note and chord lessons: no scroll in either direction, controls in view (e2e)                   | FR-MOB-7   | ☑      |
+| S7-2 | As a learner, I want to hide the browser bars while I practise                                  | Full screen button toggles and shows its pressed state (e2e)                                                         | FR-MOB-8   | ☑      |
+| S7-3 | As a learner tapping the on-screen guitar, I want a little buzz to confirm each tap             | Tap vibrates. A Settings switch turns it off (e2e). No vibration in mic mode                                         | FR-MOB-9   | ☑      |
+| S7-4 | As a learner on mobile data, I want the app to open fast                                        | First-screen JS 93 KB gzip (was 123 KB), budget 100 KB enforced in CI. Player and Tuner prefetched after first paint | NFR-PERF-2 | ☑      |
+
 ## Icebox (post-MVP)
 
 Claude-powered conversational coach (ADR-0006) · accounts and sync · MIDI and USB input · more

@@ -146,6 +146,12 @@ export function SettingsScreen() {
           checked={s.metronome}
           onChange={(v) => s.set({ metronome: v })}
         />
+        <Toggle
+          label="Vibrate on taps (on-screen guitar)"
+          help="A short buzz when you tap a fret. Never used while the microphone is listening."
+          checked={s.haptics}
+          onChange={(v) => s.set({ haptics: v })}
+        />
       </div>
 
       <div className="card stack">

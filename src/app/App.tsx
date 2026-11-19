@@ -3,17 +3,47 @@ import type { ReactNode } from 'react';
 import { HashRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useSettings } from '../settings/store.ts';
 import { FullLayout, TabLayout } from '../ui/Layout.tsx';
-import { ChordDetailScreen } from '../screens/ChordDetailScreen.tsx';
-import { ChordsScreen } from '../screens/ChordsScreen.tsx';
-import { CoachScreen } from '../screens/CoachScreen.tsx';
 import { HomeScreen } from '../screens/HomeScreen.tsx';
-import { OnboardingScreen } from '../screens/OnboardingScreen.tsx';
 import { Placeholder } from '../screens/Placeholder.tsx';
-import { PlayerScreen } from '../screens/PlayerScreen.tsx';
-import { ResultsScreen } from '../screens/ResultsScreen.tsx';
-import { SettingsScreen } from '../screens/SettingsScreen.tsx';
-import { SongsScreen } from '../screens/SongsScreen.tsx';
-import { TunerScreen } from '../screens/TunerScreen.tsx';
+import { lazyScreen } from './lazyScreen.ts';
+
+/*
+ * Code splitting (ADR-0009): Home ships in the first download; every other screen, and with them
+ * the audio engine, DSP and synth, loads on demand. That keeps the first load small on mobile data.
+ */
+const Player = lazyScreen(() => import('../screens/PlayerScreen.tsx'), 'PlayerScreen');
+const Results = lazyScreen(() => import('../screens/ResultsScreen.tsx'), 'ResultsScreen');
+const Tuner = lazyScreen(() => import('../screens/TunerScreen.tsx'), 'TunerScreen');
+const Songs = lazyScreen(() => import('../screens/SongsScreen.tsx'), 'SongsScreen');
+const Chords = lazyScreen(() => import('../screens/ChordsScreen.tsx'), 'ChordsScreen');
+const ChordDetail = lazyScreen(
+  () => import('../screens/ChordDetailScreen.tsx'),
+  'ChordDetailScreen',
+);
+const Settings = lazyScreen(() => import('../screens/SettingsScreen.tsx'), 'SettingsScreen');
+const Coach = lazyScreen(() => import('../screens/CoachScreen.tsx'), 'CoachScreen');
+const Onboarding = lazyScreen(() => import('../screens/OnboardingScreen.tsx'), 'OnboardingScreen');
+
+/** Once the first screen has painted, fetch the most likely next screens in the background. */
+function usePrefetch() {
+  useEffect(() => {
+    const run = () => {
+      void Player.preload();
+      void Tuner.preload();
+      void Results.preload();
+    };
+    const w = window as Window & {
+      requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number;
+    };
+    if (w.requestIdleCallback) {
+      const id = w.requestIdleCallback(run, { timeout: 3000 });
+      return () =>
+        (window as Window & { cancelIdleCallback?: (id: number) => void }).cancelIdleCallback?.(id);
+    }
+    const t = setTimeout(run, 1500);
+    return () => clearTimeout(t);
+  }, []);
+}
 
 function useThemeAttribute() {
   const theme = useSettings((s) => s.theme);
@@ -41,23 +71,24 @@ function OnboardingGate({ children }: { children: ReactNode }) {
 
 export function App() {
   useThemeAttribute();
+  usePrefetch();
   return (
     <HashRouter>
       <OnboardingGate>
         <Routes>
           <Route element={<TabLayout />}>
             <Route path="/" element={<HomeScreen />} />
-            <Route path="/songs" element={<SongsScreen />} />
-            <Route path="/chords" element={<ChordsScreen />} />
-            <Route path="/chords/:id" element={<ChordDetailScreen />} />
-            <Route path="/tuner" element={<TunerScreen />} />
-            <Route path="/settings" element={<SettingsScreen />} />
+            <Route path="/songs" element={<Songs.Component />} />
+            <Route path="/chords" element={<Chords.Component />} />
+            <Route path="/chords/:id" element={<ChordDetail.Component />} />
+            <Route path="/tuner" element={<Tuner.Component />} />
+            <Route path="/settings" element={<Settings.Component />} />
           </Route>
           <Route element={<FullLayout />}>
-            <Route path="/play/:kind/:id/:arr?" element={<PlayerScreen />} />
-            <Route path="/results" element={<ResultsScreen />} />
-            <Route path="/coach" element={<CoachScreen />} />
-            <Route path="/welcome" element={<OnboardingScreen />} />
+            <Route path="/play/:kind/:id/:arr?" element={<Player.Component />} />
+            <Route path="/results" element={<Results.Component />} />
+            <Route path="/coach" element={<Coach.Component />} />
+            <Route path="/welcome" element={<Onboarding.Component />} />
             <Route path="*" element={<Placeholder title="Not found" />} />
           </Route>
         </Routes>

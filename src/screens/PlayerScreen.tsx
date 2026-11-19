@@ -4,6 +4,7 @@ import { resolvePlayable } from '../content/index.ts';
 import type { Playable } from '../content/types.ts';
 import { CHORD_IDS, type ChordId } from '../music/chords.ts';
 import type { Step } from '../music/tab.ts';
+import { useFullscreen } from '../app/device.ts';
 import { usePractice } from '../app/usePractice.ts';
 import { useSettings } from '../settings/store.ts';
 import { Button, ButtonLink } from '../ui/Button.tsx';
@@ -59,9 +60,23 @@ function Player({ playable }: { playable: Playable }) {
   const { parsed, phase } = p;
   const bars = parsed.barStarts.length;
   const hasChords = parsed.steps.some((s) => s.target.kind === 'chord');
+  const hasNotes = parsed.steps.some((s) => s.target.kind === 'note');
+  // The on-screen fretboard only needs the frets this exercise uses (no sideways scrolling).
+  const fretboardMax = Math.min(
+    12,
+    Math.max(
+      4,
+      parsed.steps.reduce(
+        (m, s) => (s.target.kind === 'note' ? Math.max(m, s.target.fret) : m),
+        0,
+      ) + 1,
+    ),
+  );
+  const fullscreen = useFullscreen();
   const current = p.currentStep;
   const chords = upcomingChord(parsed.steps, current);
   const virtual = p.listening.mode === 'virtual';
+  const inputMode = virtual || showFretboard;
   const backTo = playable.kind === 'song' ? '/songs' : '/';
   const loopBeats = p.loop
     ? {
@@ -129,7 +144,10 @@ function Player({ playable }: { playable: Playable }) {
   }
 
   return (
-    <section className="player-shell" aria-labelledby="player-title">
+    <section
+      className={`player-shell${inputMode ? ' player-shell--input' : ''}`}
+      aria-labelledby="player-title"
+    >
       <header className="player-top">
         <ButtonLink to={backTo} variant="ghost" icon="back" aria-label="Back" />
         <div className="player-titles">
@@ -139,6 +157,14 @@ function Player({ playable }: { playable: Playable }) {
           </h1>
         </div>
         <div className="row player-top-actions">
+          {fullscreen.supported && (
+            <Button
+              icon={fullscreen.active ? 'shrink' : 'expand'}
+              aria-label={fullscreen.active ? 'Exit full screen' : 'Full screen'}
+              aria-pressed={fullscreen.active}
+              onClick={fullscreen.toggle}
+            />
+          )}
           {phase === 'playing' && <Button icon="pause" aria-label="Pause" onClick={p.pause} />}
           {phase === 'paused' && (
             <Button variant="primary" icon="play" aria-label="Resume" onClick={p.resume} />
@@ -149,7 +175,7 @@ function Player({ playable }: { playable: Playable }) {
         </div>
       </header>
 
-      {p.listening.status === 'listening' && (
+      {p.listening.status === 'listening' && !virtual && (
         <div className="player-status">
           <MicNotice mode={p.listening.mode} micError={p.listening.micError} compact />
           <span className="heard" aria-live="off">
@@ -169,6 +195,7 @@ function Player({ playable }: { playable: Playable }) {
           version={p.version}
           labels={labels}
           loop={loopBeats}
+          minLane={inputMode ? 20 : undefined}
         />
         {p.countIn !== null && p.mode === 'play' && phase === 'playing' && (
           <div className="count-in" aria-hidden="true">
@@ -186,9 +213,14 @@ function Player({ playable }: { playable: Playable }) {
                 Resume
               </Button>
             ) : (
-              <Button variant="primary" size="lg" icon="play" onClick={() => p.begin()}>
-                Start
-              </Button>
+              <div className="stack center" style={{ gap: 'var(--s2)' }}>
+                {virtual && (
+                  <MicNotice mode={p.listening.mode} micError={p.listening.micError} compact />
+                )}
+                <Button variant="primary" size="lg" icon="play" onClick={() => p.begin()}>
+                  Start
+                </Button>
+              </div>
             )}
           </div>
         )}
@@ -228,10 +260,10 @@ function Player({ playable }: { playable: Playable }) {
         )}
       </div>
 
-      {(virtual || showFretboard) && (
-        <div className="card stack player-fretboard">
+      {inputMode && (
+        <div className="player-fretboard">
           {hasChords && (
-            <div className="row" role="group" aria-label="Strum a chord">
+            <div className="strum-row" role="group" aria-label="Strum a chord">
               {[...usedChords, ...distractors].map((c) => (
                 <Button key={c} size="sm" onClick={() => p.strum(c)}>
                   Strum {c}
@@ -239,20 +271,24 @@ function Player({ playable }: { playable: Playable }) {
               ))}
             </div>
           )}
-          <Fretboard
-            lefty={lefty}
-            onPlay={p.pluck}
-            hint={
-              current?.target.kind === 'note'
-                ? { string: current.target.string, fret: current.target.fret }
-                : null
-            }
-          />
+          {hasNotes && (
+            <Fretboard
+              lefty={lefty}
+              onPlay={p.pluck}
+              maxFret={fretboardMax}
+              hint={
+                current?.target.kind === 'note'
+                  ? { string: current.target.string, fret: current.target.fret }
+                  : null
+              }
+            />
+          )}
         </div>
       )}
 
       {moreOpen && (
         <div className="card stack player-more" id="player-more">
+          {virtual && <MicNotice mode={p.listening.mode} micError={p.listening.micError} />}
           <div className="row">
             <Button
               size="sm"
@@ -363,28 +399,32 @@ function Player({ playable }: { playable: Playable }) {
           <Button
             size="sm"
             icon="listen"
+            aria-label={phase === 'listening' ? 'Stop' : 'Listen'}
             onClick={() => (phase === 'listening' ? p.stopListen() : p.listen())}
           >
-            {phase === 'listening' ? 'Stop' : 'Listen'}
+            <span className="dock-label">{phase === 'listening' ? 'Stop' : 'Listen'}</span>
           </Button>
           <Button
             size="sm"
             icon="loop"
+            aria-label="Loop"
             aria-pressed={!!p.loop}
             onClick={() => {
               p.setLoop(p.loop ? null : { startBar: 0, endBar: Math.min(1, bars - 1) });
               if (!p.loop) setMoreOpen(true);
             }}
           >
-            Loop
+            <span className="dock-label">Loop</span>
           </Button>
           <Button
             size="sm"
+            icon="settings"
+            aria-label="More"
             aria-expanded={moreOpen}
             aria-controls="player-more"
             onClick={() => setMoreOpen((o) => !o)}
           >
-            More
+            <span className="dock-label">More</span>
           </Button>
         </div>
       </div>

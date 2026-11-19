@@ -59,7 +59,12 @@ export default defineConfig({
         icons: [
           { src: 'icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
           { src: 'icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
-          { src: 'icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+          {
+            src: 'icon-maskable-512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'maskable',
+          },
           { src: 'icon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' },
         ],
       },
@@ -68,6 +73,25 @@ export default defineConfig({
       },
     }),
   ],
+  build: {
+    // dist/.vite/manifest.json lets scripts/check-size.ts measure what the first screen downloads.
+    manifest: true,
+    rollupOptions: {
+      output: {
+        // React rarely changes: keep it in its own long-cached chunk (ADR-0009).
+        manualChunks(id) {
+          if (
+            /node_modules\/(react|react-dom|react-router|react-router-dom|scheduler|cookie|set-cookie-parser)\//.test(
+              id,
+            )
+          ) {
+            return 'vendor-react';
+          }
+          return undefined;
+        },
+      },
+    },
+  },
   test: {
     environment: 'node',
     include: ['tests/unit/**/*.test.{ts,tsx}', 'tests/accuracy/**/*.test.ts'],

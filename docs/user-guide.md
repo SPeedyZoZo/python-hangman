@@ -14,6 +14,8 @@
 - **Prop the phone** on a music stand or against something, 30–60 cm from the guitar, screen facing you. Portrait and landscape both work. Landscape gives the highway more room.
 - The **screen stays on** while you practise. If the phone locks or you switch apps, the lesson **pauses** and waits for you.
 - The controls sit at the bottom, within thumb reach. Extra options are under **More**.
+- Tap **⛶ Full screen** in the player to hide the browser bars (Android and desktop; installed apps are already full-screen).
+- No guitar handy? Use the **on-screen guitar**. Only the frets you need are shown, and each tap gives a short buzz. Turn it off in Settings → _Vibrate on taps_.
 
 ## 2. Tune up
 
